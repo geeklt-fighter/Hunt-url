@@ -7,8 +7,8 @@ router.get('/', function (req, res, next) {
 });
 
 router.get('/mainpage', ensureAuthenticated, function (req, res, next) {
-  console.log(req.user.name)
   res.render('index', { name: req.user.name })
+
 });
 
 

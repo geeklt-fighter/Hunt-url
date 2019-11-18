@@ -1,0 +1,24 @@
+<div class="container">
+
+    <form method="POST" action="/products/add" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="InputName">Video Name</label>
+            <input type="text" class="form-control" id="InputName" placeholder="Enter video name" name="name">
+        </div>
+        <div class="form-group">
+            <label for="Advisor">Advisor</label>
+            <input type="text" class="form-control" id="Advisor" placeholder="Enter Advisor" name="advisor">
+        </div>
+        <div class="form-group">
+            <label for="Description">Description</label>
+            <textarea class="form-control" id="Description" rows="3" name="description"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="VideoFile">Upload video resource</label>
+            <input type="file" class="form-control-file" id="VideoFile" name="image">
+        </div>
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+
+</div>
