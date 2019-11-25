@@ -5,7 +5,7 @@
       "fields": {
         "title": "JS variable",
         "price": 10.99,
-        "image": { "fields": { "file": { "url": "./video/video-1.mp4" } } }
+        "image": { "fields": { "file": { "url": "./images/product-1.jpeg" } } }
       }
     },
     {
@@ -13,7 +13,7 @@
       "fields": {
         "title": "Nodejs is fun",
         "price": 12.99,
-        "image": { "fields": { "file": { "url": "./video/video-1.mp4" } } }
+        "image": { "fields": { "file": { "url": "./images/product-1.jpeg" } } }
       }
     },
     {
@@ -21,7 +21,7 @@
       "fields": {
         "title": "Python !!",
         "price": 12.99,
-        "image": { "fields": { "file": { "url": "./video/video-1.mp4" } } }
+        "image": { "fields": { "file": { "url": "./images/product-1.jpeg" } } }
       }
     },
     {
@@ -29,7 +29,7 @@
       "fields": {
         "title": "WTH, C#",
         "price": 22.99,
-        "image": { "fields": { "file": { "url": "./video/video-1.mp4" } } }
+        "image": { "fields": { "file": { "url": "./images/product-1.jpeg" } } }
       }
     },
     {
@@ -37,7 +37,7 @@
       "fields": {
         "title": "JAVA is dead",
         "price": 88.99,
-        "image": { "fields": { "file": { "url": "./video/video-1.mp4" } } }
+        "image": { "fields": { "file": { "url": "./images/product-1.jpeg" } } }
       }
     },
     {
@@ -45,7 +45,7 @@
       "fields": {
         "title": "JS is trend",
         "price": 32.99,
-        "image": { "fields": { "file": { "url": "./video/video-1.mp4" } } }
+        "image": { "fields": { "file": { "url": "./images/product-1.jpeg" } } }
       }
     },
     {
@@ -53,7 +53,7 @@
       "fields": {
         "title": "Nodejs is future",
         "price": 45.99,
-        "image": { "fields": { "file": { "url": "./video/video-1.mp4" } } }
+        "image": { "fields": { "file": { "url": "./images/product-1.jpeg" } } }
       }
     },
     {
@@ -61,7 +61,7 @@
       "fields": {
         "title": "I don't know Python ",
         "price": 33.99,
-        "image": { "fields": { "file": { "url": "./video/video-1.mp4" } } }
+        "image": { "fields": { "file": { "url": "./images/product-1.jpeg" } } }
       }
     }
   ]

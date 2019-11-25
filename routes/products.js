@@ -9,6 +9,7 @@ const blobService = azureStorage.createBlobService(AZURE_CONNECTION_STRING)
 const getStream = require('into-stream')
 const containerName = 'timloimage'
 
+
 let Product = require('../models/Products')
 
 
@@ -31,10 +32,10 @@ router.post('/add', uploadStrategy, (req, res) => {
     product.advisor = req.body.advisor
     product.description = req.body.description
 
-    console.log(req.file.originalname)
     const blobName = getBlobName(req.file.originalname)
     const stream = getStream(req.file.buffer)
     const streamLength = req.file.buffer.length
+
 
     blobService.createBlockBlobFromStream(containerName, blobName, stream, streamLength, err => {
         if (err) {
@@ -45,16 +46,36 @@ router.post('/add', uploadStrategy, (req, res) => {
         console.log('image is uploaded')
     })
 
+
+    product.img_url = getAuthImageUrl(blobName)
+    console.log('product image url: ',product.img_url)
+
     product.save(function (err) {
         if (err) {
             return
         } else {
-
-
-            res.redirect('/products/add')
+            res.redirect('/mainpage')
         }
     })
 })
+
+
+var getAuthImageUrl = (blobName) => {
+    let url = blobService.getUrl(containerName, blobName)
+    let sas = blobService.generateSharedAccessSignature(containerName, blobName, {
+        AccessPolicy: {
+            Permissions: azureStorage.BlobUtilities.SharedAccessPermissions.READ,
+            Start: azureStorage.date.minutesFromNow(-15),
+            Expiry: azureStorage.date.minutesFromNow(30)
+        }
+    })
+    console.log('sas: ',sas)
+
+    return `${url}?${sas}`
+}
+
+
+
 
 
 

@@ -13,6 +13,10 @@ const ProdSchema = new mongoose.Schema({
     description: {
         type: String,
         require: false
+    },
+    img_url: {
+        type: String,
+        required: true
     }
 })
 

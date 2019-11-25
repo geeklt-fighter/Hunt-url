@@ -44,8 +44,8 @@ class UI {
             result += `
             <article class="product">
                 <div class="img-container">
-                    <video width="320" height="240" controls><source src=${product.image} type="video/mp4"></video>
                     
+                    <image src=${product.image} width="320" height="240">
                     <button class="bag-btn" data-id=${product.id}>
                         <i class="fas fa-heart"></i>
                         add to love

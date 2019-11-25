@@ -17,7 +17,7 @@
             </span>
             <div class="cart-items">0</div>
         </div>
- 
+
     </div>
 </nav>
 
@@ -41,9 +41,20 @@
 </section>
 
 
+<section class="productstest">
+    <% products.forEach(product => { %>
+        <h4><%= product.name%></h4>
+        <h4><%= product.advisor%></h4>
+        <h4><%= product.description%></h4>
+        <% console.log(product.img_url) %>
+        <img src="<%= product.img_url%>" width="420" height="380"/>
+    <% }); %>
+</section>
+
+
 <div class="cart-overlay">
     <div class="cart">
-        <span class="close-cart"> 
+        <span class="close-cart">
             <i class="fas fa-window-close"></i>
         </span>
         <h2>your cart</h2>
@@ -60,5 +71,8 @@
         </div>
     </div>
 </div>
+
+
+
 
 <script src="./javascripts/app.js"></script>
