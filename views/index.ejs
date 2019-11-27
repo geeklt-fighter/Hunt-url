@@ -18,38 +18,49 @@
             <div class="cart-items">0</div>
         </div>
 
+        <div class="add-btn">
+            <a href="/products/add" style="text-decoration:none">Add Products</a>
+        </div>
+
     </div>
 </nav>
 
 <header class="hero">
     <div class="banner">
         <h1 class="banner-title">Learning video collection</h1>
-        <button class="banner-btn">shop now</button>
+        <!-- <button class="banner-btn">shop now</button> -->
     </div>
 </header>
 
-<section class="products">
+<!-- <section class="products">
     <div class="section-title">
         <h2>Our Videos</h2>
     </div>
     <div class="products-center">
-        <!-- single product -->
-
-        <!-- end of single product -->
-
+        
     </div>
-</section>
+</section> -->
 
 
-<section class="productstest">
-    <% products.forEach(product => { %>
-        <h4><%= product.name%></h4>
-        <h4><%= product.advisor%></h4>
-        <h4><%= product.description%></h4>
-        <% console.log(product.img_url) %>
-        <img src="<%= product.img_url%>" width="420" height="380"/>
-    <% }); %>
-</section>
+
+<div class="container">
+    
+        <div class="card" style="width: 18rem;">
+            <% products.forEach(product => { %>
+            <img src="<%= product.img_url%>" class="card-img-top" />
+            <div class="card-body">
+                <p class="card-title">Product: <%= product.name%></p>
+                <p class="card-title">Advisor: <%= product.advisor%></p>
+                <p class="card-title">Description: <%= product.description%></p>
+            </div>
+
+
+            <a href="/products/<%= product._id %>" class="btn btn-primary"> More Information</a>
+            <% }); %>
+        </div>
+ 
+</div>
+
 
 
 <div class="cart-overlay">
