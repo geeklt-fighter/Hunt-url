@@ -4,23 +4,34 @@
             <i class="fas fa-bars"></i>
         </span>
         <!-- <img src="./images/logo.svg" alt="store logo"> -->
-        <div class="profile-btn">
-            <span class="nav-icon">
-                <i class="fas fa-user-alt"> Welcome <%= name %></i>
-            </span>
-            <a href="/users/logout" class="btn btn-secondary">Logout</a>
-        </div>
 
-        <div class="cart-btn">
+        <% if (user) { %>
+            <div class="profile-btn">
+                <span class="nav-icon">
+                    <i class="fas fa-user-alt"> Welcome <%=name%></i>
+                </span>
+                <a href="/users/logout" class="btn btn-secondary">Logout</a>
+            </div>
+            <div class="add-btn">
+                <a href="/products/add" style="text-decoration:none">Add Products</a>
+            </div>
+        <% } else { %>
+
+            <div class="Join-btn">
+                <a href="/users/register">Register</a>
+                <a href="/users/login">Login</a>
+            </div>
+        <% } %>
+
+
+        <!-- <div class="cart-btn">
             <span class="nav-icon">
                 <i class="fas fa-heart"></i>
             </span>
             <div class="cart-items">0</div>
-        </div>
+        </div> -->
 
-        <div class="add-btn">
-            <a href="/products/add" style="text-decoration:none">Add Products</a>
-        </div>
+
 
     </div>
 </nav>
@@ -44,21 +55,21 @@
 
 
 <div class="container">
-    
-        <div class="card" style="width: 18rem;">
-            <% products.forEach(product => { %>
-            <img src="<%= product.img_url%>" class="card-img-top" />
-            <div class="card-body">
-                <p class="card-title">Product: <%= product.name%></p>
-                <p class="card-title">Advisor: <%= product.advisor%></p>
-                <p class="card-title">Description: <%= product.description%></p>
-            </div>
 
-
-            <a href="/products/<%= product._id %>" class="btn btn-primary"> More Information</a>
-            <% }); %>
+    <div class="card" style="width: 18rem;">
+        <% products.forEach(product => { %>
+        <img src="<%= product.img_url%>" class="card-img-top" />
+        <div class="card-body">
+            <p class="card-title">Product: <%= product.name%></p>
+            <p class="card-title">Advisor: <%= product.advisor%></p>
+            <p class="card-title">Description: <%= product.description%></p>
         </div>
- 
+
+
+        <a href="/products/<%= product._id %>" class="btn btn-primary"> More Information</a>
+        <% }); %>
+    </div>
+
 </div>
 
 

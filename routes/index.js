@@ -4,7 +4,17 @@ const { ensureAuthenticated } = require('../config/auth')
 const Products = require('../models/Products') 
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('welcome')
+  Products.find({},function (err,productData) {
+    if (err) {
+      console.log(err)
+    }else{
+      res.render('index', { 
+        name: res.locals.user,
+        products: productData
+      })
+    }
+  })
+  // res.render('welcome')
 });
 
 router.get('/mainpage', ensureAuthenticated, function (req, res, next) {
@@ -18,8 +28,6 @@ router.get('/mainpage', ensureAuthenticated, function (req, res, next) {
       })
     }
   })
-  
-
 });
 
 
