@@ -5,7 +5,7 @@
 
     <p><%= product.description%></p>
 
-    <img src="<%= product.img_url%>" alt="">
+    <img src="<%= product.img_url%>" width="600">
     <br><br>
     <a href="/products/edit/<%= product._id %>" class="btn btn-primary"> Edit</a>
     <a href="#" id="deleteProduct" class="btn btn-danger" data-id="<%= product._id %>" > Delete</a>

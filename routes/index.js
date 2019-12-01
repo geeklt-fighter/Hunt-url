@@ -17,13 +17,13 @@ router.get('/', function (req, res, next) {
   // res.render('welcome')
 });
 
-router.get('/mainpage', ensureAuthenticated, function (req, res, next) {
+router.get('/mainpage', function (req, res, next) {
   Products.find({},function (err,productData) {
     if (err) {
       console.log(err)
     }else{
       res.render('index', { 
-        name: req.user.name,
+        // name: req.user.name,
         products: productData
       })
     }

@@ -1,7 +1,7 @@
 <div class="container">
 
-    <form method="POST" action="/products/edit/<%= product._id %>" >
-      
+    <form method="POST" action="/products/edit/<%= product._id %>">
+
         <div class="form-group">
             <label for="InputName">Video Name</label>
             <input type="text" class="form-control" id="InputName" value=<%= product.name %> name="name">
@@ -12,13 +12,16 @@
         </div>
         <div class="form-group">
             <label for="Description">Description</label>
-            <textarea class="form-control" id="Description" rows="3" name="description"><%= product.description%></textarea>
+            <textarea class="form-control" id="Description" rows="3"
+                name="description"><%= product.description%></textarea>
         </div>
 
-        
-
-    
         <button type="submit" class="btn btn-primary">Update</button>
+
+        <script src="/ckeditor/ckeditor.js"></script>
+        <script>
+            CKEDITOR.replace('Description');
+        </script>
     </form>
 
 </div>
