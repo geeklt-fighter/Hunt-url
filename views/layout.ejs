@@ -9,11 +9,61 @@
     <title>Timlo app</title>
     <script src="https://kit.fontawesome.com/84ee932288.js" crossorigin="anonymous"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
-    <link rel="stylesheet" href="stylesheets/style.css">
+    <!-- <link rel="stylesheet" href="stylesheets/style.css"> -->
+    <style>
+        .hero {
+            min-height: calc(100vh - 60px);
+            background: url("../images/Tech-Background.png") center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body>
+    <header>
+        <div class="collapse bg-dark" id="navbarHeader">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-8 col-md-7 py-4">
+                        <h4 class="text-white">About</h4>
+                        <p class="text-muted">We are learning route focusing on help user to improve their learning
+                            experience</p>
+                    </div>
+                    <div class="col-sm-4 offset-md-1 py-4">
+                        <% if (user) { %>
 
+                        <h4 class="text-white">Welcome <%= user.name%></h4>
+                        <ul class="list-unstyled">
+                            <li><a href="/products/add" class="text-white">Add Products</a></li>
+                            <li><a href="/users/logout" class="text-white">Logout</a></li>
+                        </ul>
+                        <% } else { %>
+                        <h4 class="text-white">Do you want to join us</h4>
+                        <ul class="list-unstyled">
+                            <li><a href="/users/register" class="text-white">Register</a></li>
+                            <li><a href="/users/login" class="text-white">Login</a></li>
+                        </ul>
+                        <% } %>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="navbar navbar-dark bg-dark shadow-sm">
+            <div class="container d-flex justify-content-between">
+                <a href="/mainpage" class="navbar-brand d-flex align-items-center">
+                    <strong>Learning Route</strong>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader"
+                    aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+        </div>
+    </header>
     <%- body %>
 
 
@@ -26,7 +76,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
         integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
         crossorigin="anonymous"></script>
-    
+
 </body>
 
 </html>
