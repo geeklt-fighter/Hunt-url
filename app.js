@@ -7,7 +7,7 @@ const flash = require('connect-flash')
 const session = require('express-session')
 const passport = require('passport')
 const mongoose = require('mongoose')
-require('dotenv').config()
+// require('dotenv').config()
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
@@ -19,13 +19,23 @@ const app = express();
 // Passport config
 require('./config/passport')(passport)
 
-// DB config
-const db = process.env.MongoURI
 
-// Connect to mongo
-mongoose.connect(db, { useNewUrlParser: true })
-  .then(() => { console.log('MongoDB connected') })
-  .catch(err => console.log(err))
+if (process.env.NODE_ENV === 'production') {
+  // Connect to cosmos 
+  mongoose.connect(process.env.MongoConnectionString, { useNewUrlParser: true })
+    .then(() => { console.log('CosmosDB connected') })
+    .catch(err => console.log(err))
+} else if (process.env.NODE_ENV === 'development') {
+  // Connect to mongo
+  mongoose.connect(process.env.MongoURI, { useNewUrlParser: true })
+    .then(() => { console.log('MongoDB connected') })
+    .catch(err => console.log(err))
+}
+
+// // Connect to mongo
+// mongoose.connect(db, { useNewUrlParser: true })
+//   .then(() => { console.log('MongoDB connected') })
+//   .catch(err => console.log(err))
 
 
 // view engine setup
