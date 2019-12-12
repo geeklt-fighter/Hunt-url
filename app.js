@@ -32,10 +32,6 @@ if (process.env.NODE_ENV === 'production') {
     .catch(err => console.log(err))
 }
 
-// // Connect to mongo
-// mongoose.connect(db, { useNewUrlParser: true })
-//   .then(() => { console.log('MongoDB connected') })
-//   .catch(err => console.log(err))
 
 
 // view engine setup

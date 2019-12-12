@@ -52,7 +52,6 @@ router.post('/add', uploadStrategy, (req, res) => {
 
 
     product.img_url = getAuthImageUrl(blobName)
-    console.log('product image url: ', product.img_url)
 
     product.save(function (err) {
         if (err) {
