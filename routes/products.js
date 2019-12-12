@@ -8,12 +8,14 @@ const { AZURE_CONNECTION_STRING } = process.env
 const blobService = azureStorage.createBlobService(AZURE_CONNECTION_STRING)
 const getStream = require('into-stream')
 const containerName = 'timloimage'
+const { ensureAuthenticated } = require('../config/auth')
 
 // Bring in Article Models
 let Product = require('../models/Products')
 // Bring in User Models
 let User = require('../models/Users')
-
+// Bring in Theme Models
+let Theme = require('../models/Themes')
 
 const getBlobName = originalName => {
     const identifier = Math.random().toString().replace(/0\./, '')
@@ -22,8 +24,14 @@ const getBlobName = originalName => {
 
 
 // Load the add_product.ejs page
-router.get('/add', (req, res) => {
-    res.render('add_product')
+router.get('/add', ensureAuthenticated, (req, res) => {
+    Theme.find({}, 'name', function (err, themes) {
+        res.render('add_product', {
+            advisor: req.user._id,
+            themes: themes
+        })
+    })
+
 })
 
 
@@ -33,6 +41,7 @@ router.post('/add', uploadStrategy, (req, res) => {
     let product = new Product()
     product.name = req.body.name
     // product.advisor = req.body.advisor
+    product.theme = req.body.theme
     product.advisor = req.user._id  // You must login, otherwise you will get 500 error
     product.description = req.body.description
 
@@ -64,7 +73,7 @@ router.post('/add', uploadStrategy, (req, res) => {
 
 
 // Load edit form
-router.get('/edit/:id', (req, res) => {
+router.get('/edit/:id', ensureAuthenticated, (req, res) => {
     Product.findById(req.params.id, function (err, product) {
         res.render('edit_product', {
             title: 'Edit Product',
@@ -96,7 +105,7 @@ router.delete('/:id', (req, res) => {
     if (!req.user._id) {
         res.status(500).send()
     }
-    console.log('id:',req.params.id)
+    console.log('id:', req.params.id)
     let query = { _id: req.params.id }
 
     Product.findById(req.params.id, function (err, product) {
@@ -141,13 +150,13 @@ var getAuthImageUrl = (blobName) => {
 }
 
 // Access Control
-var ensureAuthenticated = (req, res, next) => {
-    if (req.isAuthenticated) {
-        return next()
-    } else {
-        res.redirect('/users/login')
-    }
-}
+// var ensureAuthenticated = (req, res, next) => {
+//     if (req.isAuthenticated) {
+//         return next()
+//     } else {
+//         res.redirect('/users/login')
+//     }
+// }
 
 
 

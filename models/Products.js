@@ -6,6 +6,10 @@ const ProdSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    theme: {
+        type: String,
+        required: true
+    },
     advisor: {
         type: String,
         required: true
