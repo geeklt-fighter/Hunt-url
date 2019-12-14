@@ -1,17 +1,18 @@
 <div class="container">
-    <h1><%= product.name%></h1>
 
-    <h5> Written by <%= product.advisor%></h5>
+    <h1>Learning: <%= product.name%></h1>
+    <h2>Theme: <%= product.theme%></h2>
+    <h5>Provided by <%= product.advisor%></h5>
 
-    <p><%= product.description%></p>
+    <p>Description: <%= product.description%></p>
 
-   
+
     <video controls width="600">
-        <source src="<%= product.img_url%>" type="video/mp4"> 
+        <source src="<%= product.img_url%>" type="video/mp4">
     </video>
     <br><br>
     <a href="/products/edit/<%= product._id %>" class="btn btn-primary"> Edit</a>
-    <a href="#" id="deleteProduct" class="btn btn-danger" data-id="<%= product._id %>" > Delete</a>
+    <a href="#" id="deleteProduct" class="btn btn-danger" data-id="<%= product._id %>"> Delete</a>
 </div>
 
 

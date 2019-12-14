@@ -40,7 +40,6 @@ router.post('/add', uploadStrategy, (req, res) => {
 
     let product = new Product()
     product.name = req.body.name
-    // product.advisor = req.body.advisor
     product.theme = req.body.theme
     product.advisor = req.user._id  // You must login, otherwise you will get 500 error
     product.description = req.body.description

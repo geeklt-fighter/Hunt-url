@@ -2,9 +2,12 @@ const express = require('express');
 const router = express.Router();
 const bycrypt = require('bcryptjs')
 const passport = require('passport')
+const { ensureAuthenticated } = require('../config/auth')
 
 // User model
 const User = require('../models/Users')
+// Product model
+const Product = require('../models/Products')
 
 // Login
 router.get('/login', (req, res) => {
@@ -96,6 +99,28 @@ router.post('/register', (req, res) => {
   }
 })
 
+
+router.get('/profile', ensureAuthenticated, (req, res) => {
+  let user = res.locals.user
+
+  let ps = []
+  Product.find({}, (err, products) => {
+
+    products.map(product => {
+      if (product.advisor == user._id) {
+        ps.push(product)
+      }
+    })
+
+    res.render('profile', {
+      products: ps,
+      user: user
+    })
+  })
+
+
+
+})
 
 
 // Logout Handle 
