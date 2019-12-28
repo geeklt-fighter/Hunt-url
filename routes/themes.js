@@ -26,15 +26,6 @@ router.post('/add', function (req, res, next) {
         }
     })
 
-    // Theme.insertMany({
-    //     name: name
-    // }, function (err, theme) {
-    //     if (err) {
-    //         res.send(err)
-    //     } else {
-    //         res.redirect('/mainpage')
-    //     }
-    // })
 })
 
 

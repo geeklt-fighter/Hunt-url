@@ -13,6 +13,7 @@ const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const productsRouter = require('./routes/products')
 const themesRouter = require('./routes/themes')
+const browsesRouter = require('./routes/browses')
 
 const app = express();
 
@@ -23,12 +24,12 @@ require('./config/passport')(passport)
 
 if (process.env.NODE_ENV === 'production') {
   // Connect to cosmos 
-  mongoose.connect(process.env.MongoConnectionString, { useNewUrlParser: true })
+  mongoose.connect(process.env.MongoConnectionString, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => { console.log('CosmosDB connected') })
     .catch(err => console.log(err))
 } else if (process.env.NODE_ENV === 'development') {
   // Connect to mongo
-  mongoose.connect(process.env.MongoURI, { useNewUrlParser: true })
+  mongoose.connect(process.env.MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => { console.log('MongoDB connected') })
     .catch(err => console.log(err))
 }
@@ -75,6 +76,7 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productsRouter)
 app.use('/themes', themesRouter)
+app.use('/browses', browsesRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
