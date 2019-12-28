@@ -6,17 +6,17 @@ const HistorySchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    title: {
+    content_title: {
         type: String,
-        required: true
+        require: true
     },
     visit_count: {
         type: Number,
-        required: true
+        require: true
     },
     last_visit_time: {
         type: String,
-        required: true
+        require: true
     }
 })
 
