@@ -3,6 +3,7 @@ var router = express.Router()
 var os = require('os')
 var sqlite3 = require('sqlite3')
 
+var History = require('../models/History')
 
 var homedir = os.homedir()
 var historyPath = homedir.concat('\\',
