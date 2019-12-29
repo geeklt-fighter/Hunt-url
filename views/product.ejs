@@ -11,8 +11,14 @@
         <source src="<%= product.img_url%>" type="video/mp4">
     </video>
     <br><br>
+
+    <% if(user){ %>
+    <% if(user.id == product.advisor){ %>
     <a href="/products/edit/<%= product._id %>" class="btn btn-primary"> Edit</a>
     <a href="#" id="deleteProduct" class="btn btn-danger" data-id="<%= product._id %>"> Delete</a>
+    <% } %>
+    <% } %>
+
 </div>
 
 
