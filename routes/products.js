@@ -119,7 +119,7 @@ router.delete('/:id', (req, res) => {
 
 
 // Get Single Article
-router.get('/:id', (req, res) => {
+router.get('/:id',ensureAuthenticated, (req, res) => {
 
     Product.findById(req.params.id, function (err, product) {
 
