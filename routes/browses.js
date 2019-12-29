@@ -16,18 +16,21 @@ var historyPath = homedir.concat('\\',
 var stagingPath = homedir.concat('\\', 'HistoryData')
 var stagingFile = stagingPath.concat('\\', 'HistoryCopy')
 
-// Create the staging folder in order to solving the sqlite3 lock problem
+// Create the staging folder as the copy place
 if (!fs.existsSync(stagingPath)) {
     console.log('Create the folder')
     mkdirp(stagingPath)
 }
 
+// Copy the file
 var source = fs.createReadStream(historyPath)
 var dest = fs.createWriteStream(stagingFile)
 if (fs.statSync(historyPath).size !== fs.statSync(stagingFile).size) {
     source.pipe(dest)
 }
-var db
+var db;
+
+// After finish copying, we query the copy file
 source.on('end', function () {
     db = new sqlite3.Database(stagingFile, (err) => {
         if (!err) {
@@ -38,9 +41,6 @@ source.on('end', function () {
 
 
 router.get('/', (req, res, next) => {
-
-
-
     let sql = `select url,title,visit_count, datetime(last_visit_time / 1000000 + (strftime('%s', '1601-01-01T08:00:00')), 'unixepoch') as time from urls`
     db.all(sql, [], (err, rows) => {
         if (err) {
@@ -102,6 +102,7 @@ router.get('/', (req, res, next) => {
     res.send('test successfully')
 })
 
+// There are many types of the end of domain name such as .com .tw .net 
 function dispatchUrl(url, type, container) {
     u = url.split(type, 1)
     uObject = { key: u.toString(), value: url }
@@ -126,6 +127,7 @@ function saveGroup(group) {
     })
 }
 
+// Group the heterogeneous url by the same domain name
 function groupBy(list, keyGetter) {
     const map = new Map()
     list.forEach((item) => {
@@ -140,4 +142,6 @@ function groupBy(list, keyGetter) {
     });
     return map;
 }
+
+
 module.exports = router
