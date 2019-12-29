@@ -2,6 +2,8 @@ var express = require('express')
 var router = express.Router()
 var os = require('os')
 var sqlite3 = require('sqlite3')
+var fs = require('fs')
+var mkdirp = require('mkdirp')
 
 // Using database model
 var History = require('../models/History')
@@ -11,15 +13,34 @@ var Url = require('../models/Url')
 var homedir = os.homedir()
 var historyPath = homedir.concat('\\',
     'AppData\\Local\\Google\\Chrome\\User Data\\Default\\History')
-var db = new sqlite3.Database(historyPath, (err) => {
-    if (!err) {
-        console.log('connect success')
-    }
+var stagingPath = homedir.concat('\\', 'HistoryData')
+var stagingFile = stagingPath.concat('\\', 'HistoryCopy')
+
+// Create the staging folder in order to solving the sqlite3 lock problem
+if (!fs.existsSync(stagingPath)) {
+    console.log('Create the folder')
+    mkdirp(stagingPath)
+}
+
+var source = fs.createReadStream(historyPath)
+var dest = fs.createWriteStream(stagingFile)
+if (fs.statSync(historyPath).size !== fs.statSync(stagingFile).size) {
+    source.pipe(dest)
+}
+var db
+source.on('end', function () {
+    db = new sqlite3.Database(stagingFile, (err) => {
+        if (!err) {
+            console.log('connect success')
+        }
+    })
 })
 
 
-
 router.get('/', (req, res, next) => {
+
+
+
     let sql = `select url,title,visit_count, datetime(last_visit_time / 1000000 + (strftime('%s', '1601-01-01T08:00:00')), 'unixepoch') as time from urls`
     db.all(sql, [], (err, rows) => {
         if (err) {
@@ -27,9 +48,7 @@ router.get('/', (req, res, next) => {
         }
 
         History.find({}, (err, datas) => {
-            // console.log(datas)
             for (let i = datas.length; i < rows.length; i++) {
-                // console.log(rows[i].url)
                 let history_mongo = new History({
                     url: rows[i].url,
                     content_title: rows[i].title,
@@ -40,10 +59,8 @@ router.get('/', (req, res, next) => {
                     if (err) {
                         throw err
                     }
-                    // console.log(history)
                 })
             }
-            // console.log(rows.length)
 
             let urlArray = []
             let netUrlArray = []
@@ -51,7 +68,6 @@ router.get('/', (req, res, next) => {
             let comUrlArray = []
             let twUrlArray = []
 
-            // datas.forEach(data => {
             for (let i = datas.length; i < rows.length; i++) {
                 if (rows[i].url.includes(".io")) {
                     dispatchUrl(rows[i].url, ".io", urlArray)
@@ -68,7 +84,6 @@ router.get('/', (req, res, next) => {
                     console.log('other url:', rows[i].url)
                 }
             }
-            // });
 
             var grouped = groupBy(urlArray, url => url.key)
             var groupNet = groupBy(netUrlArray, url => url.key)
@@ -83,6 +98,7 @@ router.get('/', (req, res, next) => {
 
         })
     })
+
     res.send('test successfully')
 })
 
@@ -105,7 +121,6 @@ function saveGroup(group) {
                 if (err) {
                     throw err
                 }
-                // console.log(data)
             })
         })
     })
