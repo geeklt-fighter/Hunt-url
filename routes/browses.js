@@ -102,6 +102,17 @@ router.get('/', (req, res, next) => {
     res.send('test successfully')
 })
 
+router.get('/detail',(req,res)=>{
+    History.find((err,datas)=>{
+        datas.map((item)=>{
+            if (item.content_title.includes('Google 搜尋')) {
+               console.log(item.content_title) 
+            }
+        })
+        res.send(datas)
+    })
+})
+
 // There are many types of the end of domain name such as .com .tw .net 
 function dispatchUrl(url, type, container) {
     u = url.split(type, 1)
