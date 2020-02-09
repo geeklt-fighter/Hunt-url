@@ -51,6 +51,9 @@ const userSchema = new mongoose.Schema({
 // Document middleware: between getting data and saving it to the database
 userSchema.pre('save', async function (next) {
     // "this" point to the document
+    if (!this.isModified('password')) {
+        return next()
+    }
     // need to await, or else the password cannot encrypted
     this.password = await bcrypt.hash(this.password, 12)
     // we don't need to save passwordConfirm saved to the document
@@ -61,6 +64,16 @@ userSchema.pre('save', async function (next) {
 
 userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
     return await bcrypt.compare(candidatePassword, userPassword)
+}
+
+userSchema.methods.createPasswordResetToken = function () {
+    const resetToken = crypto.randomBytes(32).toString('hex')
+
+    // Note: resetToken like the password, so we need to encrypt
+    this.passwordResetToken = crypto.createHash('sha256').update(resetToken).digest('hex')
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000
+
+    return resetToken
 }
 const User = mongoose.model('User', userSchema)
 
