@@ -1,9 +1,11 @@
-const User = require('../models/userModel')
+// const {promisify} = require('util')
+const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
+const User = require('../models/userModel')
 const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 const sendEmail = require('../utils/email')
-const crypto = require('crypto')
+
 
 const signToken = id => {
     return jwt.sign({ id: id }
@@ -104,6 +106,58 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     user.passwordConfirm = req.body.passwordConfirm
     user.passwordResetToken = undefined
     user.passwordResetExpires = undefined
+    await user.save()
+
+    const token = signToken(user._id)
+    res.status(200).json({
+        status: 'success',
+        token
+    })
+})
+
+exports.protect = catchAsync(async (req, res, next) => {
+    // Get the token and check whether it is there
+    let token
+    if (req.headers.authorization && req.headers.authorization.startsWith('Hello')) {
+        token = req.headers.authorization.split(' ')[1]
+    }
+
+    if (!token) {
+        return next(new AppError('You are not logged in! Please log in to get access', 401))
+    }
+
+    // Verify the token we get
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET)
+
+    // Check if user still exists
+    const currentUser = await User.findById(decoded.id)
+    if (!currentUser) {
+        return next(new AppError('The token belonging to this user does no longer exists', 401))
+    }
+
+    // Check user change password after the JWT was issued (the most complex part)
+    if (currentUser.changesPasswordAfter(decoded.iat)) {
+        return next(new AppError('User recently changed password! Please log in again', 401))
+    }
+
+    // Please notice: grant access to this user
+    req.user = currentUser
+
+    next()
+})
+
+
+exports.updatePassword = catchAsync(async (req, res, next) => {
+    // 1) Get user from the collection
+    const user = await User.findById(req.user._id).select('+password')
+    
+    // 2) Check if posted current password is correct
+    if (!(await user.correctPassword(req.body.passwordCurrent,user.password))) {
+        return next(new AppError('Your current password is wrong',403))
+    }
+
+    user.password = req.body.password
+    user.passwordConfirm = req.body.passwordConfirm
     await user.save()
 
     const token = signToken(user._id)

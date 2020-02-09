@@ -61,6 +61,20 @@ userSchema.pre('save', async function (next) {
     next()
 })
 
+userSchema.pre('save',function (next) {
+    if (!this.isModified('password') || this.isNew) {
+        return next()
+    }
+    this.passwordChangedAt = Date.now()
+    next()
+})
+
+userSchema.pre(/^find/, function (next) {    // "/^find/": not just find, also find and update, find and delete, and so on 
+    // this point to the current query  [ userController >> getAllUsers >> User.find() ]
+    this.find({ active: { $ne: false } })   // we don't use {active: true} because other documents has no active field 
+    next()
+})
+
 
 userSchema.methods.correctPassword = async function (candidatePassword, userPassword) {
     return await bcrypt.compare(candidatePassword, userPassword)
@@ -74,6 +88,14 @@ userSchema.methods.createPasswordResetToken = function () {
     this.passwordResetExpires = Date.now() + 10 * 60 * 1000
 
     return resetToken
+}
+
+userSchema.methods.changesPasswordAfter = function (JWTTimestamp) {
+    if (this.passwordChangedAt) {
+        const changedTimeStamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10)
+        console.log(changedTimeStamp, JWTTimestamp)
+        return changedTimeStamp > JWTTimestamp
+    }
 }
 const User = mongoose.model('User', userSchema)
 
