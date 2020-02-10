@@ -30,11 +30,7 @@ exports.updateMe = catchAsync(async (req, res, nex) => {
     })
 })
 
-exports.getMe = (req, res, next) => {
-    req.params.id = req.user.id
-    next()
-}
-
+// user delete themselves = we don't actually delete them but tag their active attribute to false
 exports.deleteMe = catchAsync(async (req, res, next) => {
     await User.findByIdAndUpdate(req.user.id, { active: false })
 
@@ -43,6 +39,12 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
         data: null
     })
 })
+
+
+exports.getMe = (req, res, next) => {
+    req.params.id = req.user.id
+    next()
+}
 
 
 exports.getUser = catchAsync(async (req, res, next) => {
@@ -57,6 +59,51 @@ exports.getUser = catchAsync(async (req, res, next) => {
         status: 'success',
         data: {
             data: doc
+        }
+    })
+})
+
+
+// This is the admin privileges, but admin can not change the user's password
+exports.deleteUser = catchAsync(async (req, res, next) => {
+    const user = await User.findByIdAndDelete(req.params.id)
+
+    if (!user) {
+        return next(new AppError('No user found with that ID', 404))
+    }
+
+    res.status(204).json({
+        status: 'success',
+        data: null
+    })
+})
+
+exports.updateUser = catchAsync(async (req, res, next) => {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true
+    })
+
+    if (!user) {
+        return next(new AppError('No user found with that ID', 404))
+    }
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            data: user
+        }
+    })
+})
+
+exports.getAllUsers = catchAsync(async (req, res, next) => {
+    const user = await User.find()
+
+    res.status(200).json({
+        status: 'success',
+        results: user.length,
+        data: {
+            data: user
         }
     })
 })

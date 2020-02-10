@@ -1,6 +1,6 @@
 const express = require('express')
-const { signup, login, forgotPassword, resetPassword, protect, updatePassword } = require('../controller/authController')
-const { getMe, getUser, updateMe, deleteMe } = require('../controller/userController')
+const { signup, login, forgotPassword, resetPassword, protect, updatePassword, restrictTo } = require('../controller/authController')
+const { getMe, getUser, updateMe, deleteMe, updateUser, deleteUser, getAllUsers } = require('../controller/userController')
 const router = express.Router()
 
 
@@ -19,5 +19,18 @@ router.get('/me', getMe, getUser)
 router.delete('/deleteMe', deleteMe)
 router.patch('/updateMe', updateMe)
 
+router.use(restrictTo('admin'))
+
+
+// RESTful style coding
+router
+    .route('/')
+    .get(getAllUsers)
+
+router
+    .route('/:id')
+    .get(getUser)
+    .patch(updateUser)
+    .delete(deleteUser)
 
 module.exports = router
