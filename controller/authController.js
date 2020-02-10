@@ -150,10 +150,10 @@ exports.protect = catchAsync(async (req, res, next) => {
 exports.updatePassword = catchAsync(async (req, res, next) => {
     // 1) Get user from the collection
     const user = await User.findById(req.user._id).select('+password')
-    
+
     // 2) Check if posted current password is correct
-    if (!(await user.correctPassword(req.body.passwordCurrent,user.password))) {
-        return next(new AppError('Your current password is wrong',403))
+    if (!(await user.correctPassword(req.body.passwordCurrent, user.password))) {
+        return next(new AppError('Your current password is wrong', 403))
     }
 
     user.password = req.body.password
@@ -166,3 +166,12 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
         token
     })
 })
+
+exports.restrictTo = (...roles) => {
+    return (req, res, next) => {
+        if (!roles.includes(req.user.role)) {
+            return next(new AppError('You do not have permission to perform this action', 403))
+        }
+        next()
+    }
+}
