@@ -1,5 +1,10 @@
 const nodemailer = require('nodemailer')
 
+
+/**
+ * when user forgot their password, they send the email
+ * @param {object} options - the content of the email 
+ */
 const sendEmail = async options => {
     // *1) create a transporter
     //     create reusable transporter object using the default SMTP transport
