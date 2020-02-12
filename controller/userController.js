@@ -12,6 +12,7 @@ const filterObj = (obj, ...allowedFields) => {
     return newObj
 }
 
+
 exports.updateMe = catchAsync(async (req, res, nex) => {
     // 1) Create error if user want to update password
     if (req.body.password || req.body.passwordConfirm) {
