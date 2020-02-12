@@ -115,6 +115,9 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     })
 })
 
+/**
+ * If users want to do something in the website, they must login to get the token
+ */
 exports.protect = catchAsync(async (req, res, next) => {
     // Get the token and check whether it is there
     let token
@@ -167,6 +170,9 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     })
 })
 
+/**
+ * @param {enum} roles - enter the role who can do the specific thing
+ */
 exports.restrictTo = (...roles) => {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
