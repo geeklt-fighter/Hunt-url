@@ -41,13 +41,20 @@ exports.deleteMe = catchAsync(async (req, res, next) => {
     })
 })
 
-
+/**
+ * Middleware
+ * user can get their own data, combining with getUser function
+ */
 exports.getMe = (req, res, next) => {
     req.params.id = req.user.id
     next()
 }
 
 
+/**
+ * Admin privilege
+ * admin can see the user data
+ */
 exports.getUser = catchAsync(async (req, res, next) => {
     let query = User.findById(req.params.id)
 
@@ -65,7 +72,10 @@ exports.getUser = catchAsync(async (req, res, next) => {
 })
 
 
-// This is the admin privileges, but admin can not change the user's password
+/**
+ * Admin privileges
+ * admin can delete user and remove user data from the database
+ */
 exports.deleteUser = catchAsync(async (req, res, next) => {
     const user = await User.findByIdAndDelete(req.params.id)
 
@@ -79,6 +89,10 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
     })
 })
 
+/**
+ * Admin privileges
+ * admin can not change the user's password
+ */
 exports.updateUser = catchAsync(async (req, res, next) => {
     const user = await User.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
@@ -97,6 +111,10 @@ exports.updateUser = catchAsync(async (req, res, next) => {
     })
 })
 
+/**
+ * Admin privileges
+ * admin can see all the user data
+ */
 exports.getAllUsers = catchAsync(async (req, res, next) => {
     const user = await User.find()
 

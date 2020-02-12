@@ -170,6 +170,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     })
 })
 
+
 /**
  * @param {enum} roles - enter the role who can do the specific thing
  */
