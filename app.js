@@ -18,7 +18,10 @@ const usersRouter = require('./routes/users');
 const productsRouter = require('./routes/products')
 const themesRouter = require('./routes/themes')
 const browsesRouter = require('./routes/browses')
+
+
 const userRouter = require('./routes/userRouter')
+const postRouter = require('./routes/postRouter')
 
 const app = express();
 
@@ -29,9 +32,14 @@ require('./config/passport')(passport)
 
 if (process.env.NODE_ENV === 'production') {
   // Connect to cosmos 
-  mongoose.connect(process.env.MongoConnectionString, { useNewUrlParser: true, useUnifiedTopology: true })
+  mongoose.set('useNewUrlParser', true);
+  mongoose.set('useFindAndModify', false);
+  mongoose.set('useCreateIndex', true);
+  mongoose.set('useUnifiedTopology', true);
+  mongoose.connect(process.env.MongoConnectionString)
     .then(() => { console.log('CosmosDB connected') })
     .catch(err => console.log(err))
+
 } else if (process.env.NODE_ENV === 'development') {
   // Connect to mongo
   mongoose.connect(process.env.MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -85,13 +93,14 @@ app.use('/themes', themesRouter)
 app.use('/browses', browsesRouter)
 // API Router
 app.use('/api/v1/users', userRouter)
+app.use('/api/v1/posts', postRouter)
 
-app.all('*',(req,res,next)=>{
+app.all('*', (req, res, next) => {
   // const err = new Error(`Can't find ${req.originalUrl} on this server`)
   // err.status = 'fail'
   // err.statusCode = 404
 
-  next(new AppError(`Can't find ${req.originalUrl} on this server`,404))
+  next(new AppError(`Can't find ${req.originalUrl} on this server`, 404))
 })
 
 app.use(GlobalErrorHandler)
