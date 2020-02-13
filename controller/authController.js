@@ -2,6 +2,7 @@
 const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 const User = require('../models/userModel')
+const Post = require('../models/postModel')
 const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 const sendEmail = require('../utils/email')
@@ -150,6 +151,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 })
 
 
+
 exports.updatePassword = catchAsync(async (req, res, next) => {
     // 1) Get user from the collection
     const user = await User.findById(req.user._id).select('+password')
@@ -182,3 +184,13 @@ exports.restrictTo = (...roles) => {
         next()
     }
 }
+
+
+exports.restrictOwner = catchAsync(async (req, res, next) => {
+    const post = await Post.findById(req.params.id)
+
+    if (post.poster.toString() !== req.user.id.toString()) {
+        return next(new AppError('You are not the owner of this post', 403))
+    }
+    next()
+})

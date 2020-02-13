@@ -44,9 +44,17 @@ exports.createPost = catchAsync(async (req, res, next) => {
 
 
 exports.updatePost = catchAsync(async (req, res, next) => {
-    await Post.findByIdAndUpdate(req.params.id, req.body, {
-        new: true
+    
+
+    const post = await Post.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true
     })
+    
+    // protect the user's specific post
+    if (post.poster.toString() !== req.user.id.toString()) {
+        return next(new AppError('You are not the owner of this post',403))
+    }
     res.status(200).json({
         status: 'success',
         data: {
@@ -57,10 +65,16 @@ exports.updatePost = catchAsync(async (req, res, next) => {
 
 
 exports.deletePost = catchAsync(async (req, res, next) => {
-    const Post = await Post.findByIdAndDelete(req.params.id)
+    const post = await Post.findByIdAndDelete(req.params.id)
 
-    if (!Post) {
+
+    if (!post) {
         return next(new AppError('No post found with that id', 404))
+    }
+
+    // protect the user's specific post
+    if (post.poster.toString() !== req.user.id.toString()) {
+        return next(new AppError('You are not the owner of this post',403))
     }
 
     res.status(204).json({

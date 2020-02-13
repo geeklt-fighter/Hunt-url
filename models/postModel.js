@@ -6,7 +6,7 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: [true, 'A post must have a name'],
         trim: true,
-        maxlength: [30, 'A post name must have less or equal than 30 characters']
+        maxlength: [50, 'A post name must have less or equal than 30 characters']
     },
     theme: {
         type: String,
@@ -20,12 +20,13 @@ const postSchema = new mongoose.Schema({
         type: String,
         required: [true, 'You must sharing something']
     },
-    poster: [
-        {
-            type: mongoose.Schema.ObjectId,
-            ref: 'User'
-        }
-    ]
+    poster: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'User'
+    }
+}, {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
 })
 
 

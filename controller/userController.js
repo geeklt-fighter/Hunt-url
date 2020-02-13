@@ -13,7 +13,7 @@ const filterObj = (obj, ...allowedFields) => {
 }
 
 
-exports.updateMe = catchAsync(async (req, res, nex) => {
+exports.updateMe = catchAsync(async (req, res, next) => {
     // 1) Create error if user want to update password
     if (req.body.password || req.body.passwordConfirm) {
         return next(new AppError('This route is not for the password update, please use /updateMyPassword route'))
