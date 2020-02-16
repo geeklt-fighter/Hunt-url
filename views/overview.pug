@@ -13,30 +13,28 @@ block content
                             span= post.name
 
                     .card__details
-                        h4.card__sub-heading= `${post.difficulty} ${post.duration}-day post`
+                        h4.card__sub-heading= `${post.difficulty} range post`
                         p.card__text= post.summary
-                        .card__data
-                            svg.card__icon
-                                use(xlink:href='/img/icons.svg#icon-map-pin')
-                            span= post.startLocation.description
+                        //- .card__data
+                        //-     svg.card__icon
+                        //-         use(xlink:href='/img/icons.svg#icon-map-pin')
+                        //-     span= post.startLocation.description
                         .card__data
                             svg.card__icon
                                 use(xlink:href='/img/icons.svg#icon-calendar')
-                            span= post.startDates[0].toLocaleString('en-us',{month:'long',year:'numeric'})
-                        .card__data
-                            svg.card__icon
-                                use(xlink:href='/img/icons.svg#icon-flag')
-                            span= `${post.locations.length} stops`
+                            span= post.createdAt.toLocaleString('en-us',{month:'long',year:'numeric'})
+                        //- .card__data
+                        //-     svg.card__icon
+                        //-         use(xlink:href='/img/icons.svg#icon-flag')
+                        //-     span= `${post.locations.length} stops`
                         .card__data
                             svg.card__icon
                                 use(xlink:href='/img/icons.svg#icon-user')
-                            span= `${post.maxGroupSize} people`
+                            span= `${post.name}`
 
                     .card__footer
                         p
-                            span.card__footer-value= `$${post.price} `
-                            |
-                            span.card__footer-text per person
+                            span.card__footer-value= `$${post.theme} `
                         p.card__ratings
                             span.card__footer-value= `${post.ratingsAverage} `
                             |
