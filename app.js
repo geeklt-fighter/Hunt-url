@@ -19,7 +19,7 @@ const productsRouter = require('./routes/products')
 const themesRouter = require('./routes/themes')
 const browsesRouter = require('./routes/browses')
 
-
+const viewRouter = require('./routes/viewRouter')
 const userRouter = require('./routes/userRouter')
 const postRouter = require('./routes/postRouter')
 
@@ -50,9 +50,13 @@ if (process.env.NODE_ENV === 'production') {
 
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.use(expressLayouts)
-app.set('view engine', 'ejs');
+// app.set('views', path.join(__dirname, 'views'));
+// app.use(expressLayouts)
+// app.set('view engine', 'ejs');
+app.set('view engine', 'pug')
+app.set('views', path.join(__dirname, 'views'))
+
+
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -91,6 +95,8 @@ app.use('/users', usersRouter);
 app.use('/products', productsRouter)
 app.use('/themes', themesRouter)
 app.use('/browses', browsesRouter)
+
+app.use('/', viewRouter)
 // API Router
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/posts', postRouter)
