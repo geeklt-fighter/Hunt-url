@@ -90,7 +90,7 @@ app.get('*', (req, res, next) => {
   res.locals.user = req.user || null
   next()
 })
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/products', productsRouter)
 app.use('/themes', themesRouter)
