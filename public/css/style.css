@@ -1113,10 +1113,10 @@ body {
     linear,
     left top,
     right bottom,
-    from(#7dd56f),
-    to(#28b487)
+    from(#a8e79e),
+    to(#63d8b3)
   );
-  background-image: linear-gradient(to right bottom, #7dd56f, #28b487);
+  background-image: linear-gradient(to right bottom, #a8e79e, #63d8b3);
   opacity: 0.7;
 }
 .card__picture-img {

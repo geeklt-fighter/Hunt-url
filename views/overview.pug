@@ -8,12 +8,12 @@ block content
                     .card__header
                         .card__picture
                             .card__picture-overlay &nbsp;
-                            img.card__picture-img(src=`/images/posts/${post.mediaResouce}` alt=`${post.name}`)
+                            img.card__picture-img(src=`/images/posts/${post.mediaResource}` alt=`${post.name}`)
                         h3.heading-tertirary
                             span= post.name
 
                     .card__details
-                        h4.card__sub-heading= `${post.difficulty} range post`
+                        h4.card__sub-heading= `${post.difficulty} level post`
                         p.card__text= post.summary
                         //- .card__data
                         //-     svg.card__icon
@@ -30,11 +30,11 @@ block content
                         .card__data
                             svg.card__icon
                                 use(xlink:href='/images/icons.svg#icon-user')
-                            span= `${post.name}`
+                            span= `${post.poster}`
 
                     .card__footer
                         p
-                            span.card__footer-value= `$${post.theme} `
+                            span.card__footer-value= `${post.theme} `
                         p.card__ratings
                             span.card__footer-value= `${post.ratingsAverage} `
                             |
