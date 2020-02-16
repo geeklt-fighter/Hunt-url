@@ -21,18 +21,37 @@ exports.getLoginForm = (req, res) => {
     })
 }
 
-exports.getAccount = (req, res) => {
 
-}
-
-exports.getPost = catchAsync(async(req,res,next)=>{
-    const post = await Post.findOne({slug: req.params.slug})
+exports.getPost = catchAsync(async (req, res, next) => {
+    const post = await Post.findOne({ slug: req.params.slug })
 
     if (!post) {
-        return next(new AppError('There is no post with that name',404))
+        return next(new AppError('There is no post with that name', 404))
     }
 
-    res.status(200).render('post',{
+    res.status(200).render('post', {
         post
+    })
+})
+
+
+exports.getAccount = (req, res) => {
+    res.status(200).render('account', {
+        title: 'Your account'
+    })
+}
+
+
+exports.updateUserData = catchAsync(async (req, res, next) => {
+    const updatedUser = await User.findByIdAndUpdate(req.user.id, {
+        name: req.body.name,
+        email: req.body.email
+    }, {
+        new: true,
+        runValidators: true
+    })
+
+    res.status(200).render('account', {
+        user: updatedUser
     })
 })
