@@ -17,6 +17,17 @@ const postSchema = new mongoose.Schema({
             message: 'Difficulty is either: easy, medium, difficult'
         }
     },
+    ratingsAverage: {
+        type: Number,
+        default: 4.5,
+        max: [5, 'Rating must be below 5.0'],
+        min: [1, 'Rating must be above 1.0'],
+        set: val => Math.round(val) // not 4.66666 but 4.7
+    },
+    ratingsQuantity: {
+        type: Number,
+        default: 0
+    },
     theme: {
         type: String,
         required: [true, 'A post must have a theme']
