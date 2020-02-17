@@ -5,17 +5,18 @@ mixin navItem(link,text,icon,active)
     li(class=`${active ? 'side-nav--active': ''}`)
         a(href=`${link}`)
             svg
-                use(xlink:href=`img/icons.svg#icon-${icon}`)
+                use(xlink:href=`images/icons.svg#icon-${icon}`)
             | #{text}
+        
 block content
     main.main
         .user-view
             nav.user-view__menu
                 ul.side-nav
                     +navItem('#','Settings','settings',true)
-                    +navItem('#','My bookings','briefcase')
+                    +navItem('#','My posts','speaker')
                     +navItem('#','My reviews','star')
-                    +navItem('#','Billing','credit-card')
+                    +navItem('#','My friends','user')
                 - if(user.role === 'admin')
                     .admin-nav
                         h5.admin-nav__heading Admin
@@ -42,7 +43,7 @@ block content
                             label.form__label(for='email') Email address
                             input#email.form__input(type='email' value=`${user.email}`, required, name='email')
                         .form__group.form__photo-upload
-                            img.form__user-photo(src=`/img/users/${user.photo}` alt='User photo')
+                            img.form__user-photo(src=`/images/users/${user.photo}` alt='User photo')
                             input.form__upload(type="file" accept='image/*', id='photo', name='photo')
                             label(for="photo") Choose new photo
                         .form__group.right
