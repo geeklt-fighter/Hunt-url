@@ -14,19 +14,38 @@ const signToken = id => {
         , { expiresIn: process.env.JWT_EXPIRES_IN })
 }
 
+const createSendToken = (user, statusCode, res) => {
+    const token = signToken(user._id)
+    const cookieOptions = {
+        expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
+        httpOnly: true
+    }
+
+    res.cookie('jwt', token, cookieOptions)
+    user.password = undefined
+
+    res.status(statusCode).json({
+        status: 'success',
+        token,
+        data: {
+            user
+        }
+    })
+}
 
 
 exports.signup = catchAsync(async (req, res, next) => {
     const newUser = await User.create(req.body)
 
-    const token = signToken(newUser._id)
-    res.status(201).json({
-        status: 'success',
-        token,
-        data: {
-            user: newUser
-        }
-    })
+    createSendToken(newUser, 201, res)
+    // const token = signToken(newUser._id)
+    // res.status(201).json({
+    //     status: 'success',
+    //     token,
+    //     data: {
+    //         user: newUser
+    //     }
+    // })
 })
 
 
@@ -46,11 +65,12 @@ exports.login = catchAsync(async (req, res, next) => {
         return next(new AppError('Incorrect email or password', 401))
     }
 
-    const token = signToken(user._id)
-    res.status(200).json({
-        status: 'success',
-        token
-    })
+    createSendToken(user, 200, res)
+    // const token = signToken(user._id)
+    // res.status(200).json({
+    //     status: 'success',
+    //     token
+    // })
 })
 
 
@@ -109,11 +129,12 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     user.passwordResetExpires = undefined
     await user.save()
 
-    const token = signToken(user._id)
-    res.status(200).json({
-        status: 'success',
-        token
-    })
+    createSendToken(user, 200, res)
+    // const token = signToken(user._id)
+    // res.status(200).json({
+    //     status: 'success',
+    //     token
+    // })
 })
 
 /**
@@ -165,11 +186,12 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
     user.passwordConfirm = req.body.passwordConfirm
     await user.save()
 
-    const token = signToken(user._id)
-    res.status(200).json({
-        status: 'success',
-        token
-    })
+    createSendToken(user, 200, res)
+    // const token = signToken(user._id)
+    // res.status(200).json({
+    //     status: 'success',
+    //     token
+    // })
 })
 
 
@@ -185,7 +207,9 @@ exports.restrictTo = (...roles) => {
     }
 }
 
-
+/**
+ * Only the user can update or delete their post
+ */
 exports.restrictOwner = catchAsync(async (req, res, next) => {
     const post = await Post.findById(req.params.id)
 
@@ -194,3 +218,37 @@ exports.restrictOwner = catchAsync(async (req, res, next) => {
     }
     next()
 })
+
+/**
+ * Let the browser know their state, because this website is stateless
+ * This middleware is only for rendered page, we don't want to catch any error
+ */
+exports.loggedIn = async (req, res, next) => {
+
+    // Get tokena and check if it is there
+    if (req.cookies.jwt) {
+        try {
+            // 1) Need to verify token
+            const decoded = await jwt.verify(req.cookies.jwt, process.env.JWT_SECRET)
+            console.log(decoded)
+            // 2) Check if user still exists
+            const freshUser = await User.findById(decoded.id)
+
+            if (!freshUser) {
+                return next()
+            }
+
+            // 3) check if user changed the password after the JWT was assigned
+            if (freshUser.changesPasswordAfter(decoded.iat)) {
+                return next()
+            }
+
+            res.locals.user = freshUser
+
+            return next()
+        } catch (err) {
+            return next()
+        }
+    }
+    next()
+}
