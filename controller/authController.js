@@ -145,6 +145,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     let token
     if (req.headers.authorization && req.headers.authorization.startsWith('Hello')) {
         token = req.headers.authorization.split(' ')[1]
+    } else if (req.cookies.jwt) {
+        token = req.cookies.jwt
     }
 
     if (!token) {
@@ -167,6 +169,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 
     // Please notice: grant access to this user
     req.user = currentUser
+    res.locals.user = currentUser
 
     next()
 })
