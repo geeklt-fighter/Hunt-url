@@ -16,7 +16,10 @@ const userSchema = new mongoose.Schema({
         lowercase: true, // It's not a validator, will transform email to lowercase
         validate: [validator.isEmail, 'Please provide a valid email']
     },
-    photo: String,
+    photo: {
+        type: String,
+        default: 'default.jpg'
+    },
     role: {
         type: String,
         enum: ['user', 'admin'],
@@ -61,7 +64,7 @@ userSchema.pre('save', async function (next) {
     next()
 })
 
-userSchema.pre('save',function (next) {
+userSchema.pre('save', function (next) {
     if (!this.isModified('password') || this.isNew) {
         return next()
     }
