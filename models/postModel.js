@@ -58,7 +58,7 @@ const postSchema = new mongoose.Schema({
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
-})
+}) 
 
 
 postSchema.pre('save', function (next) {
