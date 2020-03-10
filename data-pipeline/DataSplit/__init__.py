@@ -25,11 +25,11 @@ def main(myblob: func.InputStream):
             df = df.drop(index=i)
     
     # For testing 
-    df = df.head(11)
-    df = np.array_split(df, int(len(df)/3+1), axis=0)
+    # df = df.head(11)
+    # df = np.array_split(df, int(len(df)/3+1), axis=0)
     
     # Real sitaution
-    # df = np.array_split(df, int(len(df)/5000+1), axis=0)
+    df = np.array_split(df, int(len(df)/5000+1), axis=0)
     
     counter = 0
     for smalldf in df:
