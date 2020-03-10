@@ -1,0 +1,8 @@
+azure-functions
+azure-storage
+numpy
+pandas
+requests
+chardet
+beautifulsoup4
+lxml
