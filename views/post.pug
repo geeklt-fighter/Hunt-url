@@ -18,7 +18,7 @@ block content
 
         .heading-box
             h1.heading-primary
-                span= `${post.name} post`
+                span#title= `${post.name} post`
             //- .heading-box__group
             //-     .heading-box__detail
             //-         svg.heading-box__icon
@@ -38,12 +38,13 @@ block content
                     - const date = post.createdAt.toLocaleString('en-us',{month:'long',year:'numeric'})
                     +overviewBox('Next Date',date,'calendar')
                     +overviewBox('Difficulty',post.difficulty,'trending-up')
-                    +overviewBox('Poster',post.poster,'user')
+                    +overviewBox('Poster',post.poster.name,'user')
                     +overviewBox('Ratings',`${post.ratingsAverage} / 5`,'star')
                
 
                 .overview-box__group
-                    h2.heading-secondary.ma-bt-lg Recommended friend 
+                    h2.heading-secondary.ma-bt-lg Recommended Urls
+                    p#result
                     //- each guide in post.guides
                     //-     .overview-box__detail
                     //-         img.overview-box__img(src=`/img/users/${guide.photo}` alt=`${guide.name}`)
@@ -60,12 +61,12 @@ block content
             h2.heading-secondary.ma-bt-lg= `About ${post.name} post`
             - const paragraphs = post.description.split('\n')
             each p in paragraphs
-                p.description__text= p
+                p#description.description__text= p
 
-    section.section-pictures
-        each image,i in post.images
-            .picture-box
-                img.picture-box__img(src=`/images/posts/${image}` alt=`The Park Camper Tour ${i+1}` class=`picture-box__img--${i+1}`)
+    //- section.section-pictures
+    //-     each image,i in post.images
+    //-         .picture-box
+    //-             img.picture-box__img(src=`/images/posts/${image}` alt=`The Park Camper Tour ${i+1}` class=`picture-box__img--${i+1}`)
         //- .picture-box
         //-     img.picture-box__img.picture-box__img--1(src='/img/tours/post-5-1.jpg' alt='The Park Camper Tour 1')
         //- .picture-box
@@ -106,5 +107,5 @@ block content
             .cta__content
                 h2.heading-secondary What are you waiting for?
                 p.cta__text= `${post.name}. Check who has the same question with you!`
-                button.btn.btn--green.span-all-rows Searching
+                button.btn.btn--green.span-all-rows.btn-search Searching
 

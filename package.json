@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.8.3",
+    "acorn": "^7.1.1",
     "axios": "^0.19.2",
     "azure-storage": "^2.10.3",
     "bcryptjs": "^2.4.3",
@@ -25,7 +26,6 @@
     "into-stream": "^5.1.1",
     "json2csv": "^4.5.4",
     "jsonwebtoken": "^8.5.1",
-    "mkdirp": "^0.5.1",
     "moment": "^2.24.0",
     "mongoose": "^5.7.9",
     "morgan": "~1.9.1",
@@ -40,6 +40,8 @@
     "validator": "^12.2.0"
   },
   "devDependencies": {
+    "mkdirp": "^1.0.3",
+    "nodemon": "^2.0.2",
     "parcel-bundler": "^1.12.4"
   }
 }

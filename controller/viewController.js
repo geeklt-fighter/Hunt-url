@@ -6,8 +6,8 @@ const AppError = require('../utils/appError')
 
 
 exports.getOverview = catchAsync(async (req, res) => {
-    const posts = await Post.find()
-
+    const posts = await Post.find().populate('poster')
+    
     res.status(200).render('overview', {
         title: 'All Post',
         posts
@@ -23,7 +23,7 @@ exports.getLoginForm = (req, res) => {
 
 
 exports.getPost = catchAsync(async (req, res, next) => {
-    const post = await Post.findOne({ slug: req.params.slug })
+    const post = await Post.findOne({ slug: req.params.slug }).populate('poster')
 
     if (!post) {
         return next(new AppError('There is no post with that name', 404))

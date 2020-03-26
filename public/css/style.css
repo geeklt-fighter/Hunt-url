@@ -32,7 +32,7 @@ body {
   font-weight: 300;
   font-family: 'Lato', sans-serif;
   color: #777;
-  padding: 3rem;
+  /* padding: 3rem; */
   min-height: 100vh;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -441,6 +441,9 @@ body {
   -ms-flex: 0 0 50%;
   flex: 0 0 50%;
 }
+.description-box{
+  background-color: #f7f7f7;
+}
 
 .description-box .description {
   margin-right: 5rem;
@@ -823,7 +826,7 @@ body {
   }
 }
 .footer__logo img {
-  height: 3rem;
+  height: 8rem;
 }
 .footer__nav {
   list-style: none;
