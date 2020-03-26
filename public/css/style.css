@@ -441,6 +441,9 @@ body {
   -ms-flex: 0 0 50%;
   flex: 0 0 50%;
 }
+.description-box{
+  background-color: #f7f7f7;
+}
 
 .description-box .description {
   margin-right: 5rem;

@@ -10,7 +10,7 @@ block content
                             .card__picture-overlay &nbsp;
                             img.card__picture-img(src=`/images/posts/${post.mediaResource}` alt=`${post.name}`)
                         h3.heading-tertirary
-                            span= post.name
+                            span= post.name 
 
                     .card__details
                         h4.card__sub-heading= `${post.difficulty} level post`
@@ -30,7 +30,7 @@ block content
                         .card__data
                             svg.card__icon
                                 use(xlink:href='/images/icons.svg#icon-user')
-                            span= `${post.poster}`
+                            span= `${post.poster.name}`
 
                     .card__footer
                         p
