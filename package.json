@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "NODE_ENV=production node ./bin/www",
-    "start:dev": "NODE_ENV=development nodemon -r dotenv/config ./bin/www",
+    "dev": "NODE_ENV=development nodemon -r dotenv/config ./bin/www",
     "watch:js": "parcel watch ./public/javascripts/index.js -d ./public/javascripts -o bundle.js"
   },
   "dependencies": {
@@ -41,6 +41,7 @@
   },
   "devDependencies": {
     "mkdirp": "^1.0.3",
+    "nodemon": "^2.0.2",
     "parcel-bundler": "^1.12.4"
   }
 }
