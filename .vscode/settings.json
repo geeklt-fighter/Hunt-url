@@ -1,12 +1,6 @@
 {
-<<<<<<< HEAD
     "azureFunctions.deploySubpath": "data-process",
     "azureFunctions.scmDoBuildDuringDeployment": true,
-=======
-    "azureFunctions.deploySubpath": "data-pipeline",
-    "azureFunctions.scmDoBuildDuringDeployment": true,
-    "azureFunctions.pythonVenv": ".venv",
->>>>>>> api-build-pipeline
     "azureFunctions.projectLanguage": "Python",
     "azureFunctions.projectRuntime": "~3",
     "debug.internalConsoleOptions": "neverOpen"
