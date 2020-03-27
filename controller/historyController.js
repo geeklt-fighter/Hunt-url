@@ -10,6 +10,9 @@ const azureStorage = require('azure-storage')
 const containerName = 'samples-blobitems'
 const { AZURE_CSTRING_DEV } = process.env
 const blobService = azureStorage.createBlobService(AZURE_CSTRING_DEV)
+
+const catchAsync = require('../utils/catchAsync')
+const AppError = require('../utils/appError')
 // const multer = require('multer')
 // const inMemoryStorage = multer.memoryStorage()
 // const uploadStrategy = multer({
@@ -20,9 +23,9 @@ const copyFolder = `${homedir}/HistoryData/`
 const sourceFolder = `${homedir}/AppData/Local/Google/Chrome/User Data/Default/History`
 const copyFile = `${homedir}/HistoryData/HistoryCopy`
 
-const fields = ['identifier', 'url', 'title', 'visit_count'];
+const fields = ['user', 'identifier', 'url', 'title', 'visit_count'];
 
-function copyHistoryData() {
+function copyHistoryData(user) {
     return new Promise((resolve, reject) => {
         // If there is no folder for the copied history
         if (!fs.existsSync(copyFolder)) {
@@ -76,7 +79,7 @@ function copyHistoryData() {
 
                 var group = groupBy(historyArray, url => url.key)
 
-                data = removeYG(group)
+                data = removeYG(user, group)
 
 
                 let csv
@@ -104,7 +107,7 @@ function copyHistoryData() {
  */
 function dispatchUrl(row, type, container) {
     u = row.url.split(type, 1)
-    uObject = { key: u.toString(), url: row.url, title: row.title, visit_count: row.visit_count }
+    uObject = { key: u.toString() + type, url: row.url, title: row.title, visit_count: row.visit_count }
     container.push(uObject)
 }
 
@@ -132,7 +135,7 @@ function groupBy(list, keyGetter) {
  * Remove the youtube and google search history
  * @param {Map} group 
  */
-function removeYG(group) {
+function removeYG(user, group) {
     let mapArray = []
     group.forEach(item => {
         mapArray.push(item)
@@ -142,9 +145,9 @@ function removeYG(group) {
         item.map((single) => {
             // Remove the google search and youtube history
             if (single.key.includes("www.google") || single.key.includes("www.youtube")) {
-                var google_youtube_obj = { identifier: single.key, url: single.url, title: single.title, visit_count: single.visit_count }
+                var google_youtube_obj = { user: user, identifier: single.key, url: single.url, title: single.title, visit_count: single.visit_count }
             } else {
-                var history_without_g_y_obj = { identifier: single.key, url: single.url, title: single.title, visit_count: single.visit_count }
+                var history_without_g_y_obj = { user: user, identifier: single.key, url: single.url, title: single.title, visit_count: single.visit_count }
                 history_without_g_y.push(history_without_g_y_obj)
             }
         })
@@ -155,11 +158,12 @@ function removeYG(group) {
 
 
 
-exports.getRecentHistories = async (req, res, next) => {
-    const file = await copyHistoryData()
+exports.getRecentHistories = catchAsync(async (req, res, next) => {
+    // console.log(req.user.id)
+    const file = await copyHistoryData(req.user.id)
     const fileName = file.split('\\')[file.split('\\').length - 1]
     // Upload the local file to the azure blob storage
-    blobService.createBlockBlobFromLocalFile(containerName,fileName,file,function (err,result,response) {
+    blobService.createBlockBlobFromLocalFile(containerName, fileName, file, function (err, result, response) {
         if (!err) {
             console.log('file uploaded successfully')
         }
@@ -169,4 +173,4 @@ exports.getRecentHistories = async (req, res, next) => {
         status: 'success',
         message: 'successfully copied'
     })
-}
+})
