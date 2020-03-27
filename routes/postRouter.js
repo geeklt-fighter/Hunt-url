@@ -5,7 +5,7 @@ const { protect, restrictOwner } = require('../controller/authController')
 
 
 
-
+ 
 router
     .route('/')
     .get(getAllPosts)

@@ -1,5 +1,5 @@
 import "@babel/polyfill";
-import { login } from "./login";
+import { login,logout } from "./login";
 import { updateSettings } from "./updateSettings";
 import { recommend } from "./recommend";
 
@@ -7,6 +7,7 @@ const loginForm = document.querySelector('.form--login')
 const userDataForm = document.querySelector('.form-user-data')
 const userPasswordForm = document.querySelector('.form-user-password')
 const searchButton = document.querySelector('.btn-search')
+const logoutButton = document.querySelector('.nav__el--logout')
 
 if (loginForm) {
     loginForm.addEventListener('submit', e => {
@@ -17,6 +18,9 @@ if (loginForm) {
 
         login(email, password)
     })
+}
+if (logoutButton) {
+    logoutButton.addEventListener('click',logout)
 }
 
 if (userDataForm) {

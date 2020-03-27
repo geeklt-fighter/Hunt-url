@@ -13,8 +13,8 @@ block content
         .user-view
             nav.user-view__menu
                 ul.side-nav
-                    +navItem('#','Settings','settings',true)
-                    +navItem('#','My posts','speaker')
+                    +navItem('/me','Settings','settings',true)
+                    +navItem('/posts','My posts','speaker')
                     +navItem('#','My reviews','star')
                     +navItem('#','My friends','user')
                 - if(user.role === 'admin')

@@ -1,12 +1,12 @@
 const express = require('express')
-const { signup, login, forgotPassword, resetPassword, protect, updatePassword, restrictTo } = require('../controller/authController')
+const { signup, login,logout, forgotPassword, resetPassword, protect, updatePassword, restrictTo } = require('../controller/authController')
 const { getMe, getUser, updateMe, deleteMe, updateUser, deleteUser, getAllUsers, uploadUserPhoto, resizeUserPhoto } = require('../controller/userController')
 const router = express.Router()
 
 
 router.post('/signup', signup)
 router.post('/login', login)
-// router.get('/logout')
+router.get('/logout',logout)
 
 router.post('/forgotPassword', forgotPassword)
 router.post('/resetPassword/:token', resetPassword)

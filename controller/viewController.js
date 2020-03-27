@@ -55,3 +55,11 @@ exports.updateUserData = catchAsync(async (req, res, next) => {
         user: updatedUser
     })
 })
+
+
+exports.getMyPost = async(req,res)=>{
+    const myPost = await Post.find({poster: res.locals.user._id})
+    res.status(200).render('mypost',{
+        posts: myPost
+    })
+}
