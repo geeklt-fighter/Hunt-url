@@ -12,12 +12,18 @@ exports.getOverview = catchAsync(async (req, res) => {
         title: 'All Post',
         posts
     })
-})
+}) 
 
 
 exports.getLoginForm = (req, res) => {
     res.status(200).render('login', {
         title: 'Log into your account'
+    })
+}
+
+exports.getSignupForm = (req,res)=>{
+    res.status(200).render('signup',{
+        title: 'Join us'
     })
 }
 

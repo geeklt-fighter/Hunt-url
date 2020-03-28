@@ -32,7 +32,7 @@ export const logout = async() =>{
             method:'GET',
             url: 'http://localhost:3001/api/v1/users/logout'
         })
-        console.log(res.data.status)
+        
         if(res.data.status === 'success') location.reload(true)
     } catch (err) {
         showAlert('error','Err Logging out! Trying again')

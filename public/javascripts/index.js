@@ -1,13 +1,29 @@
 import "@babel/polyfill";
 import { login,logout } from "./login";
+import { signup } from "./signup";
 import { updateSettings } from "./updateSettings";
 import { recommend } from "./recommend";
 
+const signupForm = document.querySelector('.form--signup')
 const loginForm = document.querySelector('.form--login')
 const userDataForm = document.querySelector('.form-user-data')
 const userPasswordForm = document.querySelector('.form-user-password')
 const searchButton = document.querySelector('.btn-search')
 const logoutButton = document.querySelector('.nav__el--logout')
+
+if (signupForm) {
+    signupForm.addEventListener('submit',e=>{
+        e.preventDefault()
+
+        const username = document.getElementById('username').value
+        const email = document.getElementById('email').value
+        const password = document.getElementById('password').value
+        const passwordconfirm = document.getElementById('passwordconfirm').value
+
+        signup(username,email,password,passwordconfirm)
+    })
+}
+
 
 if (loginForm) {
     loginForm.addEventListener('submit', e => {
@@ -19,6 +35,7 @@ if (loginForm) {
         login(email, password)
     })
 }
+
 if (logoutButton) {
     logoutButton.addEventListener('click',logout)
 }
