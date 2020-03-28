@@ -31,12 +31,18 @@ exports.getSignupForm = (req,res)=>{
 exports.getPost = catchAsync(async (req, res, next) => {
     const post = await Post.findOne({ slug: req.params.slug }).populate('poster')
 
+    let result
+    if (post.result) {
+        result = post.result.split(',')
+    }
+    
     if (!post) {
         return next(new AppError('There is no post with that name', 404))
     }
 
     res.status(200).render('post', {
-        post
+        post,
+        result
     })
 })
 

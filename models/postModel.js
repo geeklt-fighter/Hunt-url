@@ -54,7 +54,8 @@ const postSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now()
-    }
+    },
+    result:String
 }, {
     toJSON: { virtuals: true },
     toObject: { virtuals: true }

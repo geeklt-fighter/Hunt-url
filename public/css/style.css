@@ -511,6 +511,10 @@ body {
   margin-right: 1.25rem;
 }
 
+#post-id{
+  visibility: hidden;
+}
+
 .section-pictures {
   display: -webkit-box;
   display: -ms-flexbox;

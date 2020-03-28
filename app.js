@@ -48,8 +48,8 @@ app.use(cookieParser())
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString()
-  console.log('cookies: ', req.cookies)
-  console.log('locals: ', res.locals)
+  // console.log('cookies: ', req.cookies)
+  // console.log('locals: ', res.locals)
   next()
 })
 

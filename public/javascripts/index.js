@@ -1,8 +1,9 @@
 import "@babel/polyfill";
-import { login,logout } from "./login";
+import { login, logout } from "./login";
 import { signup } from "./signup";
 import { updateSettings } from "./updateSettings";
 import { recommend } from "./recommend";
+import { showAlert } from "./alert";
 
 const signupForm = document.querySelector('.form--signup')
 const loginForm = document.querySelector('.form--login')
@@ -12,7 +13,7 @@ const searchButton = document.querySelector('.btn-search')
 const logoutButton = document.querySelector('.nav__el--logout')
 
 if (signupForm) {
-    signupForm.addEventListener('submit',e=>{
+    signupForm.addEventListener('submit', e => {
         e.preventDefault()
 
         const username = document.getElementById('username').value
@@ -20,7 +21,7 @@ if (signupForm) {
         const password = document.getElementById('password').value
         const passwordconfirm = document.getElementById('passwordconfirm').value
 
-        signup(username,email,password,passwordconfirm)
+        signup(username, email, password, passwordconfirm)
     })
 }
 
@@ -37,7 +38,7 @@ if (loginForm) {
 }
 
 if (logoutButton) {
-    logoutButton.addEventListener('click',logout)
+    logoutButton.addEventListener('click', logout)
 }
 
 if (userDataForm) {
@@ -64,6 +65,7 @@ if (userPasswordForm) {
     })
 }
 
+
 if (searchButton) {
 
     searchButton.addEventListener('click', e => {
@@ -72,16 +74,24 @@ if (searchButton) {
         const username = document.getElementById('username')
         const title = document.getElementById('title').textContent
         const description = document.getElementById('description').textContent
+        const postId = document.getElementById('post-id').textContent
 
         if (username) {
             console.log('Username: ', username.textContent)
+            console.log('Description:', description)
+            console.log('Current Url:', currentUrl)
+            console.log('Title: ', title);
+
+            
+            recommend(username, currentUrl, title, description,postId)
+        }else{
+            showAlert('error','Please log in')
+            window.setTimeout(()=>{
+                location.assign('/login')
+            },1000)
         }
 
-        console.log('Description:', description)
-        console.log('Current Url:', currentUrl)
-        console.log('Title: ', title);
 
-        recommend(username,currentUrl,title,description)
         // document.getElementById('result').innerHTML = `<a>${username.textContent}</a>`
     })
 }

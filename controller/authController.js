@@ -18,7 +18,7 @@ const createSendToken = (user, statusCode, res) => {
     const token = signToken(user._id)
     const cookieOptions = {
         expires: new Date(Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000),
-        httpOnly: true
+        httpOnly: false // Original is true
     }
 
     res.cookie('jwt', token, cookieOptions)
@@ -76,7 +76,7 @@ exports.login = catchAsync(async (req, res, next) => {
 exports.logout = (req,res)=>{
     res.cookie('jwt','loggedout',{
         expires: new Date(Date.now() + 100 * 1000),
-        httpOnly: true
+        httpOnly: true  // Original is true
     })
     res.status(200).json({
         status:'success'
@@ -126,7 +126,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
     const hashedToken = crypto.createHash('sha256').update(req.params.token).digest('hex')
     // 1.a) Find the same encrypted resetToken and ensure that token has not expired
     const user = await User.findOne({ passwordResetToken: hashedToken, passwordResetExpires: { $gte: Date.now() } })
-    console.log(user)
+    // console.log(user)
     // 2) If token has not expired, and there is user, set the new password
     if (!user) {
         return next(new AppError('Token is invalid or has expired', 400))
@@ -242,7 +242,7 @@ exports.loggedIn = async (req, res, next) => {
         try {
             // 1) Need to verify token
             const decoded = await jwt.verify(req.cookies.jwt, process.env.JWT_SECRET)
-            console.log(decoded)
+            // console.log(decoded)
             // 2) Check if user still exists
             const freshUser = await User.findById(decoded.id)
 

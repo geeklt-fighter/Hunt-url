@@ -45,8 +45,14 @@ block content
                 .overview-box__group
                     h2.heading-secondary.ma-bt-lg Recommended Urls
                     //- p#result
-                    .overview-box__detail
-                        span#result
+                    
+                    -if (result)
+                        each url in result
+                            .overview-box__detail
+                                li= url 
+                                br
+                            
+                    p#post-id= post._id
                     //- each guide in post.guides
                     //-     .overview-box__detail
                     //-         img.overview-box__img(src=`/img/users/${guide.photo}` alt=`${guide.name}`)
