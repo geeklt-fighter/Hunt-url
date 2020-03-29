@@ -515,6 +515,7 @@ body {
   visibility: hidden;
 }
 
+.user-id,
 .post-id{
   visibility: hidden;
 }

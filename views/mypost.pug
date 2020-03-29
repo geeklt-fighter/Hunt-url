@@ -14,8 +14,8 @@ block content
             nav.user-view__menu
                 ul.side-nav
                     +navItem('/me','Settings','settings')
-                    +navItem('/posts','My posts','speaker',true)
-                    +navItem('#','My reviews','star')
+                    +navItem('/myposts','My posts','speaker',true)
+                    +navItem('/editpost','Edit post','star')
                     +navItem('#','My friends','user')
                 - if(user.role === 'admin')
                     .admin-nav

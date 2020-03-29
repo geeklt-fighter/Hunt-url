@@ -3,7 +3,7 @@ const router = express.Router()
 const { getAllPosts, getPost, createPost, updatePost, deletePost, uploadPostImages, resizePostImages } = require('../controller/postController')
 const { protect, restrictOwner } = require('../controller/authController')
 
-
+ 
 
  
 router

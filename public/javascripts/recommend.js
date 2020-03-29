@@ -27,6 +27,13 @@ export const recommend = async (user, url, title, descr, postId) => {
             data: bodyFormData
         })
 
+        if (res2) {
+            showAlert('success', 'Recommend url')
+            window.setTimeout(() => {
+                location.reload()
+            }, 1000)
+        }
+
     } catch (err) {
         showAlert('error', err)
     }

@@ -3,12 +3,13 @@ import { login, logout } from "./login";
 import { signup } from "./signup";
 import { updateSettings } from "./updateSettings";
 import { recommend } from "./recommend";
-import { deletePost } from "./editpost";
+import { deletePost, createPost } from "./editpost";
 import { showAlert } from "./alert";
 
 const signupForm = document.querySelector('.form--signup')
 const loginForm = document.querySelector('.form--login')
 const userDataForm = document.querySelector('.form-user-data')
+const editPostForm = document.querySelector('.form-edit-post')
 const userPasswordForm = document.querySelector('.form-user-password')
 const searchButton = document.querySelector('.btn-search')
 const logoutButton = document.querySelector('.nav__el--logout')
@@ -66,6 +67,51 @@ if (userPasswordForm) {
         updateSettings({ passwordCurrent, password, passwordConfirm }, 'password')
     })
 }
+
+if (editPostForm) {
+
+
+    editPostForm.addEventListener('submit', e => {
+        e.preventDefault()
+        const themes = document.getElementById('theme')
+        const levels = document.getElementById('level')
+        // const form = new FormData()
+        // form.append('postname',document.getElementById('postname').value)
+        // form.append('theme',theme.options[theme.selectedIndex].text)
+        // form.append('level',level.options[level.selectedIndex].text)
+        // form.append('summary',document.getElementById('summary').value)
+        // form.append('description',document.getElementById('description').value)
+        // form.append('mediaResource','data-science-3.jpg') // document.getElementById('photo').files[0]
+        // form.append('poster',document.getElementById('user-id'))
+
+        const name = document.getElementById('postname').value
+        const theme = themes.options[themes.selectedIndex].text
+        const difficulty = levels.options[levels.selectedIndex].text
+        const summary = document.getElementById('summary').value
+        const description = document.getElementById('description').value
+        const mediaResource = 'data-science-3.jpg'
+        const poster = document.getElementById('user-id').textContent
+       
+        let post = {
+            name,
+            theme,
+            difficulty,
+            summary,
+            description,
+            mediaResource,
+            poster
+        }
+
+        createPost(name,theme,difficulty,summary,description,mediaResource,poster)
+        // console.log(theme.options[theme.selectedIndex].text)
+        // console.log(level.options[level.selectedIndex].text)
+        // console.log(postname)
+        // console.log(summary)
+        // console.log(description)
+        // console.log(photo)
+    })
+}
+
 
 if (deletePostButton) {
     // console.log(deletePostButton)
