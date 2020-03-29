@@ -3,6 +3,7 @@ import { login, logout } from "./login";
 import { signup } from "./signup";
 import { updateSettings } from "./updateSettings";
 import { recommend } from "./recommend";
+import { deletePost } from "./editpost";
 import { showAlert } from "./alert";
 
 const signupForm = document.querySelector('.form--signup')
@@ -11,6 +12,7 @@ const userDataForm = document.querySelector('.form-user-data')
 const userPasswordForm = document.querySelector('.form-user-password')
 const searchButton = document.querySelector('.btn-search')
 const logoutButton = document.querySelector('.nav__el--logout')
+const deletePostButton = document.querySelectorAll('.btn-delete-post')
 
 if (signupForm) {
     signupForm.addEventListener('submit', e => {
@@ -65,6 +67,18 @@ if (userPasswordForm) {
     })
 }
 
+if (deletePostButton) {
+    // console.log(deletePostButton)
+
+    for (let i = 0; i < deletePostButton.length; i++) {
+        //    console.log(deletePostButton[i])
+        deletePostButton[i].addEventListener('click', () => {
+            const postId = document.getElementById(`post-id-${i}`).textContent
+            deletePost(postId)
+        })
+    }
+}
+
 
 if (searchButton) {
 
@@ -82,16 +96,13 @@ if (searchButton) {
             console.log('Current Url:', currentUrl)
             console.log('Title: ', title);
 
-            
-            recommend(username, currentUrl, title, description,postId)
-        }else{
-            showAlert('error','Please log in')
-            window.setTimeout(()=>{
+
+            recommend(username, currentUrl, title, description, postId)
+        } else {
+            showAlert('error', 'Please log in')
+            window.setTimeout(() => {
                 location.assign('/login')
-            },1000)
+            }, 1000)
         }
-
-
-        // document.getElementById('result').innerHTML = `<a>${username.textContent}</a>`
     })
 }

@@ -102,6 +102,7 @@ exports.updatePost = catchAsync(async (req, res, next) => {
 
 
 exports.deletePost = catchAsync(async (req, res, next) => {
+    console.log(req.params.id)
     const post = await Post.findByIdAndDelete(req.params.id)
 
 

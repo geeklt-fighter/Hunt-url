@@ -15,7 +15,6 @@ export const recommend = async (user, url, title, descr, postId) => {
             }
         })
 
-        // console.log(res.data.answer)
         var bodyFormData = new FormData()
         bodyFormData.set('result', res.data.answer)
 
@@ -28,10 +27,7 @@ export const recommend = async (user, url, title, descr, postId) => {
             data: bodyFormData
         })
 
-        console.log('Response 2: ', res2)
-        // document.getElementById('result').innerHTML = res.data.answer.join("\n")
     } catch (err) {
-        console.log(err)
         showAlert('error', err)
     }
 }
