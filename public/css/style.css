@@ -109,6 +109,9 @@ body {
 .alert--error {
   background-color: #eb4d4b;
 }
+.alert--warn {
+  background-color: #979e2f;
+}
 
 .heading-secondary { 
   font-size: 2.25rem;

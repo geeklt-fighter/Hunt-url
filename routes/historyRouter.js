@@ -5,7 +5,7 @@ const { protect } = require('../controller/authController')
 
 router
     .route('/')
-    .get(protect, getRecentHistories)
+    .get(protect, getRecentHistories) 
 
 
 

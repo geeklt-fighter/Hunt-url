@@ -81,3 +81,9 @@ exports.getEditPost = async(req,res)=>{
         title:'Edit post'
     })
 }
+
+exports.getContribution = async(req,res)=>{
+    res.status(200).render('contribution',{
+        title:'Contribution'
+    })
+}
