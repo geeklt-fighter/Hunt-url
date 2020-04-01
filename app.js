@@ -24,13 +24,13 @@ if (process.env.NODE_ENV === 'production') {
   mongoose.set('useFindAndModify', false);
   mongoose.set('useCreateIndex', true);
   mongoose.set('useUnifiedTopology', true);
-  mongoose.connect(process.env.MongoConnectionString)
+  mongoose.connect(process.env.AZURE_COSMOS_CONNECTION_STRING)
     .then(() => { console.log('CosmosDB connected') })
     .catch(err => console.log(err))
 
 } else if (process.env.NODE_ENV === 'development') {
   // Connect to mongo
-  mongoose.connect(process.env.MongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => { console.log('MongoDB connected') })
     .catch(err => console.log(err))
 }
