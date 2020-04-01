@@ -7,7 +7,7 @@ const json2csv = require('json2csv').parse
 const homedir = require('os').homedir()
 const azureStorage = require('azure-storage')
 
-const containerName = 'samples-blobitems'
+const containerName = 'history-storage'
 const { AZURE_CSTRING_DEV } = process.env
 const blobService = azureStorage.createBlobService(AZURE_CSTRING_DEV)
 
