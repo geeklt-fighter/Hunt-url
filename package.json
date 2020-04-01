@@ -26,6 +26,7 @@
     "into-stream": "^5.1.1",
     "json2csv": "^4.5.4",
     "jsonwebtoken": "^8.5.1",
+    "kind-of": "^6.0.3",
     "moment": "^2.24.0",
     "mongoose": "^5.7.9",
     "morgan": "~1.9.1",
