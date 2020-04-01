@@ -5,7 +5,8 @@
   "scripts": {
     "start": "NODE_ENV=production node ./bin/www",
     "start:dev": "NODE_ENV=development nodemon -r dotenv/config ./bin/www",
-    "watch:js": "parcel watch ./public/javascripts/index.js -d ./public/javascripts -o bundle.js"
+    "watch:js": "parcel watch ./public/javascripts/index.js -d ./public/javascripts -o bundle.js",
+    "build:js": "parcel build ./public/javascripts/index.js -d ./public/javascripts -o bundle.js"
   },
   "dependencies": {
     "@babel/polyfill": "^7.8.3",
