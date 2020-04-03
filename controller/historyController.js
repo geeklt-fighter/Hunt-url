@@ -13,14 +13,10 @@ const blobService = azureStorage.createBlobService(AZURE_CSTRING_DEV)
 
 const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
-// const multer = require('multer')
-// const inMemoryStorage = multer.memoryStorage()
-// const uploadStrategy = multer({
-//     storage: inMemoryStorage
-// })
 
-const copyFolder = `${homedir}/HistoryData/`
+
 const sourceFolder = `${homedir}/AppData/Local/Google/Chrome/User Data/Default/History`
+const copyFolder = `${homedir}/HistoryData/`
 const copyFile = `${homedir}/HistoryData/HistoryCopy`
 
 const fields = ['user', 'identifier', 'url', 'title', 'visit_count'];
@@ -71,9 +67,6 @@ function copyHistoryData(user) {
                     } else if (rows[i].url.includes(".tw")) {
                         dispatchUrl(rows[i], ".tw", twUrlArray)
                     }
-                    // else {
-                    //     console.log('other url:', rows[i].url)
-                    // }
                 }
                 var historyArray = urlArray.concat(netUrlArray).concat(orgUrlArray).concat(comUrlArray).concat(twUrlArray)
 
@@ -158,7 +151,7 @@ function removeYG(user, group) {
 
 
 
-exports.getRecentHistories = catchAsync(async (req, res, next) => {
+exports.getRecentHistories = catchAsync(async (req, res, next) => { 
     // console.log(req.user.id)
     const file = await copyHistoryData(req.user.id)
     const fileName = file.split('\\')[file.split('\\').length - 1]

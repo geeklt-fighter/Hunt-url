@@ -4,6 +4,7 @@ import { signup } from "./signup";
 import { updateSettings } from "./updateSettings";
 import { recommend } from "./recommend";
 import { deletePost, createPost } from "./editpost";
+import { contribute } from "./contribute";
 import { showAlert } from "./alert";
 
 const signupForm = document.querySelector('.form--signup')
@@ -14,6 +15,7 @@ const userPasswordForm = document.querySelector('.form-user-password')
 const searchButton = document.querySelector('.btn-search')
 const logoutButton = document.querySelector('.nav__el--logout')
 const deletePostButton = document.querySelectorAll('.btn-delete-post')
+const contributeButton = document.querySelector('.btn-contribution')
 
 if (signupForm) {
     signupForm.addEventListener('submit', e => {
@@ -75,14 +77,6 @@ if (editPostForm) {
         e.preventDefault()
         const themes = document.getElementById('theme')
         const levels = document.getElementById('level')
-        // const form = new FormData()
-        // form.append('postname',document.getElementById('postname').value)
-        // form.append('theme',theme.options[theme.selectedIndex].text)
-        // form.append('level',level.options[level.selectedIndex].text)
-        // form.append('summary',document.getElementById('summary').value)
-        // form.append('description',document.getElementById('description').value)
-        // form.append('mediaResource','data-science-3.jpg') // document.getElementById('photo').files[0]
-        // form.append('poster',document.getElementById('user-id'))
 
         const name = document.getElementById('postname').value
         const theme = themes.options[themes.selectedIndex].text
@@ -92,37 +86,36 @@ if (editPostForm) {
         const mediaResource = 'data-science-3.jpg'
         const poster = document.getElementById('user-id').textContent
        
-        let post = {
-            name,
-            theme,
-            difficulty,
-            summary,
-            description,
-            mediaResource,
-            poster
-        }
 
         createPost(name,theme,difficulty,summary,description,mediaResource,poster)
-        // console.log(theme.options[theme.selectedIndex].text)
-        // console.log(level.options[level.selectedIndex].text)
-        // console.log(postname)
-        // console.log(summary)
-        // console.log(description)
-        // console.log(photo)
     })
 }
 
 
 if (deletePostButton) {
-    // console.log(deletePostButton)
 
     for (let i = 0; i < deletePostButton.length; i++) {
-        //    console.log(deletePostButton[i])
         deletePostButton[i].addEventListener('click', () => {
             const postId = document.getElementById(`post-id-${i}`).textContent
             deletePost(postId)
         })
     }
+}
+
+if (contributeButton) {
+    contributeButton.addEventListener('click',()=>{
+        let info = confirm("1. Please ensure you want to upload your browsing history \n2. Ensure that you are the owner of the history")
+
+        if (info === true) {
+            let txt = "Thanks your contribution."
+            contribute()
+            showAlert('success',txt)
+        }else{
+            let txt = "It's ok. You can still use recommend service !!"
+            showAlert('warn',txt)
+        }
+        // document.getElementById("result-contribution").innerHTML = txt
+    })
 }
 
 

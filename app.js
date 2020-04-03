@@ -53,7 +53,7 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use('/', viewRouter)
+app.use('/', viewRouter) 
 // API Router
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/posts', postRouter)
