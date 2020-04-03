@@ -20,7 +20,7 @@ export const recommend = async (user, url, title, descr, postId) => {
 
         const res2 = await axios({
             method: 'PATCH',
-            url: `http://localhost:3001/api/v1/posts/${postId}`,
+            url: `/api/v1/posts/${postId}`,
             headers: {
                 'Authorization': `Hello ${document.cookie.split('=')[1]}`
             },
