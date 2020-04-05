@@ -18,5 +18,27 @@
 
 ## Website Architecture
 ![image](https://github.com/LOTINGYI/Learning-route/blob/master/public/images/github/Tim_Side_Project_2.jpg)
-  
 
+## The flow under the hood
+> ### Data process(Background job)
+> Step1: User upload their history data <br>
+> Step2: Clean the data and upload to blob storage<br>
+> Step3: Blob Trigger function app <br>
+> Step4-1: Split the file <br>
+> Step4-2: Create the batch pool (nodes based on the file size) <br>
+> Step4-3: Create the job and define the task (scrape whole url in file)<br>
+> Step5: Get the specific file and load it to the specific node <br>
+> Step6: Start to run the task (Use the portal to observe the status)<br>
+> Step7: After completing task, the scraped file will be stored in the blob<br>
+> Step8: Blob Trigger function app <br>
+> Step9: Clean the data and store the data into the destination <br>
+> 
+> <strong>Note: From step4-2 to step6 using azure batch service with multiprocess and multithread to speed up the scraping</strong>
+
+> ### Recommend service
+> Step1: User search the similar url based on their description<br>
+> Step2: Call API from flask host<br>
+> Step3: Get the data from the source, and process<br>
+> Step4: Response to node.js web app <br>
+> Step5: Store the recommend result to database
+> Res: User get the result
