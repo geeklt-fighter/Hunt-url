@@ -6,12 +6,12 @@ export const recommend = async (user, url, title, descr, postId) => {
     try {
         const res = await axios({
             method: 'POST',
-            url: 'https://flaskrecommend.azurewebsites.net/recommend',
+            url: 'https://recommend-service.azurewebsites.net/recommend',
             data: {
                 user,
                 url,
                 title,
-                descr
+                descr 
             }
         })
 
@@ -21,9 +21,9 @@ export const recommend = async (user, url, title, descr, postId) => {
         const res2 = await axios({
             method: 'PATCH',
             url: `/api/v1/posts/${postId}`,
-            headers: {
-                'Authorization': `Hello ${document.cookie.split('=')[1]}`
-            },
+            // headers: {
+            //     'Authorization': `Hello ${document.cookie.split('=')[1]}`
+            // },
             data: bodyFormData
         })
 

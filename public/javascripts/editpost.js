@@ -8,9 +8,6 @@ export const createPost = async (name,theme,difficulty,summary,description,media
         const res = await axios({
             method:'POST',
             url: `/api/v1/posts/`,
-            headers:{
-                'Authorization': `Hello ${document.cookie.split('=')[1]}`
-            },
             data:{
                 name,
                 theme,
@@ -39,10 +36,7 @@ export const deletePost = async (id) => {
     try {
         const res = await axios({
             method: 'DELETE',
-            url: `/api/v1/posts/${id}`,
-            headers: {
-                'Authorization': `Hello ${document.cookie.split('=')[1]}`
-            }
+            url: `/api/v1/posts/${id}`
         })
         console.log(res)
     } catch (err) {
@@ -50,3 +44,8 @@ export const deletePost = async (id) => {
         showAlert('error', err)
     }
 }
+
+
+// headers:{
+//     'Authorization': `Hello ${document.cookie.split('=')[1]}`
+// },

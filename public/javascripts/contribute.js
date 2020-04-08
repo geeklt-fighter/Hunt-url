@@ -8,10 +8,7 @@ export const contribute = async() =>{
     try {
         const res = axios({
             method:'GET',
-            url:'http://localhost:3001/api/v1/histories/',
-            headers: {
-                'Authorization': `Hello ${document.cookie.split('=')[1]}`
-            }
+            url:'http://localhost:3001/api/v1/histories/'
         })
 
         console.log(res)

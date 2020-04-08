@@ -8680,7 +8680,7 @@ function () {
             _context.next = 3;
             return (0, _axios.default)({
               method: 'POST',
-              url: 'https://flaskrecommend.azurewebsites.net/recommend',
+              url: 'https://recommend-service.azurewebsites.net/recommend',
               data: {
                 user: user,
                 url: url,
@@ -8697,9 +8697,9 @@ function () {
             return (0, _axios.default)({
               method: 'PATCH',
               url: "/api/v1/posts/".concat(postId),
-              headers: {
-                'Authorization': "Hello ".concat(document.cookie.split('=')[1])
-              },
+              // headers: {
+              //     'Authorization': `Hello ${document.cookie.split('=')[1]}`
+              // },
               data: bodyFormData
             });
 
@@ -8769,9 +8769,6 @@ function () {
             return (0, _axios.default)({
               method: 'POST',
               url: "/api/v1/posts/",
-              headers: {
-                'Authorization': "Hello ".concat(document.cookie.split('=')[1])
-              },
               data: {
                 name: name,
                 theme: theme,
@@ -8831,10 +8828,7 @@ function () {
             _context2.next = 3;
             return (0, _axios.default)({
               method: 'DELETE',
-              url: "/api/v1/posts/".concat(id),
-              headers: {
-                'Authorization': "Hello ".concat(document.cookie.split('=')[1])
-              }
+              url: "/api/v1/posts/".concat(id)
             });
 
           case 3:
@@ -8860,7 +8854,10 @@ function () {
   return function deletePost(_x8) {
     return _ref2.apply(this, arguments);
   };
-}();
+}(); // headers:{
+//     'Authorization': `Hello ${document.cookie.split('=')[1]}`
+// },
+
 
 exports.deletePost = deletePost;
 },{"axios":"../../node_modules/axios/index.js","./alert":"alert.js"}],"contribute.js":[function(require,module,exports) {
@@ -8895,10 +8892,7 @@ function () {
             try {
               res = (0, _axios.default)({
                 method: 'GET',
-                url: 'http://localhost:3001/api/v1/histories/',
-                headers: {
-                  'Authorization': "Hello ".concat(document.cookie.split('=')[1])
-                }
+                url: 'http://localhost:3001/api/v1/histories/'
               });
               console.log(res);
             } catch (err) {
@@ -9352,7 +9346,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51736" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54092" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
