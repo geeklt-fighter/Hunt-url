@@ -85,9 +85,9 @@ if (editPostForm) {
         const description = document.getElementById('description').value
         const mediaResource = 'data-science-3.jpg'
         const poster = document.getElementById('user-id').textContent
-       
 
-        createPost(name,theme,difficulty,summary,description,mediaResource,poster)
+
+        createPost(name, theme, difficulty, summary, description, mediaResource, poster)
     })
 }
 
@@ -103,16 +103,16 @@ if (deletePostButton) {
 }
 
 if (contributeButton) {
-    contributeButton.addEventListener('click',()=>{
+    contributeButton.addEventListener('click', () => {
         let info = confirm("1. Please ensure you want to upload your browsing history \n2. Ensure that you are the owner of the history")
 
         if (info === true) {
             let txt = "Thanks your contribution."
             contribute()
-            showAlert('success',txt)
-        }else{
+            showAlert('success', txt)
+        } else {
             let txt = "It's ok. You can still use recommend service !!"
-            showAlert('warn',txt)
+            showAlert('warn', txt)
         }
         // document.getElementById("result-contribution").innerHTML = txt
     })
@@ -135,7 +135,9 @@ if (searchButton) {
             console.log('Current Url:', currentUrl)
             console.log('Title: ', title);
 
-
+            const loader = document.querySelector('.loader')
+            loader.style.opacity = 1;
+            loader.style.display = 'block'
             recommend(username, currentUrl, title, description, postId)
         } else {
             showAlert('error', 'Please log in')

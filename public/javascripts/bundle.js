@@ -8665,6 +8665,9 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+var loader = document.querySelector('.loader');
+var main = document.querySelector('.main');
+
 var recommend =
 /*#__PURE__*/
 function () {
@@ -8708,6 +8711,8 @@ function () {
 
             if (res2) {
               (0, _alert.showAlert)('success', 'Recommend url');
+              loader.style.opacity = 0;
+              loader.style.display = 'none';
               window.setTimeout(function () {
                 location.reload();
               }, 1000);
@@ -9309,6 +9314,9 @@ if (searchButton) {
       console.log('Description:', description);
       console.log('Current Url:', currentUrl);
       console.log('Title: ', title);
+      var loader = document.querySelector('.loader');
+      loader.style.opacity = 1;
+      loader.style.display = 'block';
       (0, _recommend.recommend)(username, currentUrl, title, description, postId);
     } else {
       (0, _alert.showAlert)('error', 'Please log in');
@@ -9346,7 +9354,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54092" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58290" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
