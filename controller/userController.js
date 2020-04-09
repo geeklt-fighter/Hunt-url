@@ -1,10 +1,18 @@
 const multer = require('multer')
 const sharp = require('sharp')
+const azureStorage = require('azure-storage')
+const getStream = require('into-stream')
 const User = require('../models/userModel')
 const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 
+const { AZURE_CSTRING_DEV } = process.env
+
+const blobService = azureStorage.createBlobService(AZURE_CSTRING_DEV)
 const multerStorage = multer.memoryStorage()
+
+const containerName = 'user-porfolio'
+
 
 const multerFilter = (req, file, cb) => {
     if (file.mimetype.startsWith('image')) {
@@ -28,12 +36,21 @@ exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
 
     req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`
 
-    await sharp(req.file.buffer)
+    let data = await sharp(req.file.buffer)
         .resize(500, 500)
         .toFormat('jpeg')
         .jpeg({ quality: 90 })
-        .toFile(`public/images/users/${req.file.filename}`)
+        .toBuffer()
+        // .toFile(`public/images/users/${req.file.filename}`)
+    const stream = getStream(data)
+    const streamLength = data.length
 
+    blobService.createBlockBlobFromStream(containerName,req.file.filename,stream,streamLength,err=>{
+        if (!err) {
+            console.log('upload successfully')
+        }
+    })
+    
     next()
 })
 
@@ -57,6 +74,10 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
     // We do not update everythig in the req.body
     const filteredBody = filterObj(req.body, "name", "email")
+
+    if (req.file) {
+        filteredBody.photo = req.file.filename
+    }
     const updateUser = await User.findByIdAndUpdate(req.user.id, filteredBody, { new: true, runValidators: true })
 
     res.status(200).json({

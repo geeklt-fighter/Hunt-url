@@ -12,6 +12,7 @@ const GlobalErrorHandler = require('./controller/errorController')
 const viewRouter = require('./routes/viewRouter')
 const userRouter = require('./routes/userRouter')
 const postRouter = require('./routes/postRouter')
+const imageRouter = require('./routes/imageRouter')
 const historyRouter = require('./routes/historyRouter')
 
 global.__basedir = __dirname;
@@ -54,6 +55,7 @@ app.use((req, res, next) => {
 })
 
 app.use('/', viewRouter) 
+app.use('/images',imageRouter)
 // API Router
 app.use('/api/v1/users', userRouter)
 app.use('/api/v1/posts', postRouter)

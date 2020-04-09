@@ -5,6 +5,7 @@ import { updateSettings } from "./updateSettings";
 import { recommend } from "./recommend";
 import { deletePost, createPost } from "./editpost";
 import { contribute } from "./contribute";
+import { getImage } from "./image";
 import { showAlert } from "./alert";
 
 const signupForm = document.querySelector('.form--signup')
@@ -16,6 +17,28 @@ const searchButton = document.querySelector('.btn-search')
 const logoutButton = document.querySelector('.nav__el--logout')
 const deletePostButton = document.querySelectorAll('.btn-delete-post')
 const contributeButton = document.querySelector('.btn-contribution')
+
+let headeruserimg = document.querySelector('.nav__user-img')
+let accountuserimg = document.querySelector('.form__user-photo')
+
+if (headeruserimg) {
+    headeruserimg.onload = function () {
+        console.log(`Image loaded, size ${headeruserimg}`);
+    }
+    headeruserimg.onerror = function () {
+        getImage(headeruserimg.src)
+    }
+}
+
+if (accountuserimg) {
+    accountuserimg.onload = function () {
+        console.log(`Image loaded, size ${accountuserimg.src}`);
+    }
+    accountuserimg.onerror = function () {
+        getImage(accountuserimg.src)
+    }
+}
+
 
 if (signupForm) {
     signupForm.addEventListener('submit', e => {
@@ -47,16 +70,20 @@ if (logoutButton) {
 }
 
 if (userDataForm) {
+
+
     userDataForm.addEventListener('submit', e => {
         e.preventDefault()
 
-        const name = document.getElementById('name').value
-        const email = document.getElementById('email').value
+        const form = new FormData()
+        form.append('name', document.getElementById("name").value)
+        form.append('email', document.getElementById("email").value)
+        form.append('photo', document.getElementById("photo").files[0])
 
-
-        updateSettings({ name, email }, 'data')
+        updateSettings(form, 'data')
     })
 }
+
 
 if (userPasswordForm) {
     userPasswordForm.addEventListener('submit', e => {
