@@ -1,5 +1,6 @@
 const azureStorage = require('azure-storage')
 
+const User = require('../models/userModel')
 const catchAsync = require('../utils/catchAsync')
 
 const { AZURE_CSTRING_DEV } = process.env
@@ -32,7 +33,6 @@ exports.getSasUrl = catchAsync(async (req, res, next) => {
     /** 明天完成更新資料到資料庫，把調整過的sas_url重新寫進資料庫 */
 
     res.status(200).json({
-        status: 'success',
-        url
+        status: 'success'
     })
 })
