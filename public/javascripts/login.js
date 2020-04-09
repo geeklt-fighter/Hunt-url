@@ -12,7 +12,7 @@ export const login = async (email, password) => {
                 password
             }
         })
-        console.log(res)
+
 
         if (res.data.status === 'success') {
             showAlert('success', 'Logged in successfully')
@@ -33,7 +33,7 @@ export const logout = async() =>{
             url: '/api/v1/users/logout'
         })
         
-        if(res.data.status === 'success') location.reload(true)
+        if(res.data.status === 'success') location.assign('/')
     } catch (err) {
         showAlert('error','Err Logging out! Trying again')
     }

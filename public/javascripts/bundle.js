@@ -8429,7 +8429,6 @@ function () {
 
           case 3:
             res = _context.sent;
-            console.log(res);
 
             if (res.data.status === 'success') {
               (0, _alert.showAlert)('success', 'Logged in successfully');
@@ -8438,20 +8437,20 @@ function () {
               }, 500);
             }
 
-            _context.next = 11;
+            _context.next = 10;
             break;
 
-          case 8:
-            _context.prev = 8;
+          case 7:
+            _context.prev = 7;
             _context.t0 = _context["catch"](0);
             (0, _alert.showAlert)('error', _context.t0.response.data.message);
 
-          case 11:
+          case 10:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 8]]);
+    }, _callee, null, [[0, 7]]);
   }));
 
   return function login(_x, _x2) {
@@ -8481,7 +8480,7 @@ function () {
 
           case 3:
             res = _context2.sent;
-            if (res.data.status === 'success') location.reload(true);
+            if (res.data.status === 'success') location.assign('/');
             _context2.next = 10;
             break;
 
@@ -9354,7 +9353,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58290" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56978" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
