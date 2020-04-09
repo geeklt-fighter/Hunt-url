@@ -23,7 +23,7 @@ let accountuserimg = document.querySelector('.form__user-photo')
 
 if (headeruserimg) {
     headeruserimg.onload = function () {
-        console.log(`Image loaded, size ${headeruserimg}`);
+        console.log(`Image loaded, size ${headeruserimg.src}`);
     }
     headeruserimg.onerror = function () {
         getImage(headeruserimg.src)

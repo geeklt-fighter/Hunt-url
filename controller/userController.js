@@ -32,7 +32,7 @@ exports.uploadUserPhoto = upload.single('photo')
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
     if (!req.file) {
         return next()
-    }
+    } 
 
     req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`
 
@@ -75,8 +75,17 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     // We do not update everythig in the req.body
     const filteredBody = filterObj(req.body, "name", "email")
 
+    let url = `https://timlodatapipeline.blob.core.windows.net/user-porfolio/${req.file.filename}`
+    let sasToken = blobService.generateSharedAccessSignature(containerName, req.file.filename, {
+        AccessPolicy: {
+            Permissions: azureStorage.BlobUtilities.SharedAccessPermissions.READ,
+            Start: azureStorage.date.daysFromNow(0),
+            Expiry: azureStorage.date.daysFromNow(14)
+        }
+    })
+
     if (req.file) {
-        filteredBody.photo = req.file.filename
+        filteredBody.photo = `${url}?${sasToken}`
     }
     const updateUser = await User.findByIdAndUpdate(req.user.id, filteredBody, { new: true, runValidators: true })
 
