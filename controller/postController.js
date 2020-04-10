@@ -12,7 +12,7 @@ const { AZURE_CSTRING_DEV } = process.env
 const blobService = azureStorage.createBlobService(AZURE_CSTRING_DEV)
 const multerStorage = multer.memoryStorage()
 
-const containerName = 'user-porfolio'
+const containerName = 'user-post'
 
 const multerFilter = (req, file, cb) => {
     if (file.mimetype.startsWith('image')) {
@@ -27,22 +27,30 @@ const upload = multer({
     fileFilter: multerFilter
 })
 
-exports.uploadPostImages = upload.fields([
-    { name: 'mediaResource', maxCount: 1 }
-])
+exports.uploadPostImages = upload.single('mediaResource')
 
 exports.resizePostImages = catchAsync(async (req, res, next) => {
-    if (!req.files.mediaResource) {
+    if (!req.file) {
         return next()
     }
-    
-    req.body.mediaResource = `post-${req.params.id}-${Date.now()}-cover.jpeg`
+    let filename = req.file.originalname.split('.')
+    req.file.filename = filename[0]
+    req.body.mediaResource = `post-${filename[0].toLowerCase()}-${Date.now()}-cover.jpeg`
 
-    await sharp(req.files.mediaResource[0].buffer)
+    let data = await sharp(req.file.buffer)
         .resize(1980, 1280)
         .toFormat('jpeg')
         .jpeg({ quality: 90 })
-        .toFile(`public/images/posts/${req.body.mediaResource}`)
+        .toBuffer()
+    // .toFile(`public/images/tests/${req.body.mediaResource}`)
+    const stream = getStream(data)
+    const streamLength = data.length
+
+    blobService.createBlockBlobFromStream(containerName,req.body.mediaResource,stream,streamLength,err=>{
+        if (!err) {
+            console.log('upload successfully')
+        }
+    })
 
     next()
 })
@@ -75,9 +83,36 @@ exports.getPost = catchAsync(async (req, res, next) => {
     })
 })
 
+const filterObj = (obj, ...allowedFields) => {
+    const newObj = {}
+    Object.keys(obj).forEach(el => {
+        if (allowedFields.includes(el)) {
+            newObj[el] = obj[el]    // {key: el, value: obj[el]} 
+        }
+    })
+    return newObj
+}
 
 exports.createPost = catchAsync(async (req, res, next) => {
-    const newPost = await Post.create(req.body)
+    const filteredBody = filterObj(req.body, "name", "theme", "difficulty", "summary", "description", "poster")
+
+    if (req.file) {
+        let url = `https://timlodatapipeline.blob.core.windows.net/user-post/${req.body.mediaResource}`
+        let sasToken = blobService.generateSharedAccessSignature(containerName, req.body.mediaResource, {
+            AccessPolicy: {
+                Permissions: azureStorage.BlobUtilities.SharedAccessPermissions.READ,
+                Start: azureStorage.date.daysFromNow(0),
+                Expiry: azureStorage.date.daysFromNow(15)
+                // Start: azureStorage.date.secondsFromNow(0),
+                // Expiry: azureStorage.date.secondsFromNow(15)
+            }
+        })
+        filteredBody.mediaResource = `${url}?${sasToken}`
+    }
+
+
+    const newPost = await Post.create(filteredBody)
+
     res.status(201).json({
         status: 'success',
         data: {

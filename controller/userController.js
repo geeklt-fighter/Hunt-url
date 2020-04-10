@@ -33,7 +33,7 @@ exports.uploadUserPhoto = upload.single('photo')
 exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
     if (!req.file) {
         return next()
-    } 
+    }
 
     req.file.filename = `user-${req.user.id}-${Date.now()}.jpeg`
 
@@ -42,16 +42,16 @@ exports.resizeUserPhoto = catchAsync(async (req, res, next) => {
         .toFormat('jpeg')
         .jpeg({ quality: 90 })
         .toBuffer()
-        // .toFile(`public/images/users/${req.file.filename}`)
+    // .toFile(`public/images/users/${req.file.filename}`)
     const stream = getStream(data)
     const streamLength = data.length
 
-    blobService.createBlockBlobFromStream(containerName,req.file.filename,stream,streamLength,err=>{
+    blobService.createBlockBlobFromStream(containerName, req.file.filename, stream, streamLength, err => {
         if (!err) {
             console.log('upload successfully')
         }
     })
-    
+
     next()
 })
 
@@ -76,16 +76,15 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     // We do not update everythig in the req.body
     const filteredBody = filterObj(req.body, "name", "email")
 
-    let url = `https://timlodatapipeline.blob.core.windows.net/user-porfolio/${req.file.filename}`
-    let sasToken = blobService.generateSharedAccessSignature(containerName, req.file.filename, {
-        AccessPolicy: {
-            Permissions: azureStorage.BlobUtilities.SharedAccessPermissions.READ,
-            Start: azureStorage.date.daysFromNow(0),
-            Expiry: azureStorage.date.daysFromNow(15)
-        }
-    })
-
     if (req.file) {
+        let url = `https://timlodatapipeline.blob.core.windows.net/user-porfolio/${req.file.filename}`
+        let sasToken = blobService.generateSharedAccessSignature(containerName, req.file.filename, {
+            AccessPolicy: {
+                Permissions: azureStorage.BlobUtilities.SharedAccessPermissions.READ,
+                Start: azureStorage.date.daysFromNow(0),
+                Expiry: azureStorage.date.daysFromNow(15)
+            }
+        })
         filteredBody.photo = `${url}?${sasToken}`
     }
     const updateUser = await User.findByIdAndUpdate(req.user.id, filteredBody, { new: true, runValidators: true })

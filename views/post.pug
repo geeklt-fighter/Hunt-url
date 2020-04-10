@@ -14,20 +14,12 @@ block content
     section.section-header
         .header__hero
             .header__hero-overlay &nbsp;
-            img.header__hero-img(src=`/images/posts/${post.mediaResource}` alt=`${post.name}`)
+            img.header__hero-img(src=`${post.mediaResource}` alt=`${post.name}`)
 
         .heading-box
             h1.heading-primary
                 span#title= `${post.name} post`
-            //- .heading-box__group
-            //-     .heading-box__detail
-            //-         svg.heading-box__icon
-            //-             use(xlink:href='/img/icons.svg#icon-clock')
-            //-         span.heading-box__text= `${post.duration} days`
-            //-     .heading-box__detail
-            //-         svg.heading-box__icon
-            //-             use(xlink:href='/img/icons.svg#icon-map-pin')
-            //-         span.heading-box__text= `${post.startLocation.description}`
+         
 
     section.section-description
         .overview-box
@@ -57,16 +49,7 @@ block content
                                 br
                             
                     p#post-id= post._id
-                    //- each guide in post.guides
-                    //-     .overview-box__detail
-                    //-         img.overview-box__img(src=`/img/users/${guide.photo}` alt=`${guide.name}`)
-
-                    //-         -if (guide.role === 'lead-guide')
-                    //-             span.overview-box__label Lead guide
-                    //-         -if (guide.role === 'guide')
-                    //-             span.overview-box__label Tour guide  
-
-                    //-         span.overview-box__text= guide.name
+           
 
 
         .description-box
@@ -79,8 +62,8 @@ block content
         .cta
             .cta__img.cta__img--logo
                 img(src='/images/logo.png' alt='Natours logo')
-            img.cta__img.cta__img--1(src=`/images/posts/${post.images[1]}` alt=`Post picture`)
-            img.cta__img.cta__img--2(src=`/images/posts/${post.images[2]}` alt=`Post picture`)
+            img.cta__img.cta__img--1(src=`#` alt=`Post picture`)
+            img.cta__img.cta__img--2(src=`#` alt=`Post picture`)
             .cta__content
                 h2.heading-secondary What are you waiting for?
                 p.cta__text= `${post.name}. Check who has the same question with you!`

@@ -2,13 +2,16 @@ import axios from 'axios'
 import { showAlert } from "./alert";
 
 
-export const getImage = async (url) => {
+export const getImage = async (imgurl,type) => {
+    const url = type === 'user'?
+        '/images/user':
+        '/images/post' 
     try {
         const res = await axios({
-            method: 'POST',
-            url: `/images/resource`,
+            method: 'POST', 
+            url,
             data: {
-                url
+                imgurl
             }
         })
 

@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const { getSasUrl } = require('../controller/imageController')
+const { getUserSasUrl,getPostSasUrl } = require('../controller/imageController')
 const { protect } = require('../controller/authController')
 
-router.post('/resource',protect, getSasUrl)
-
+router.post('/user',protect, getUserSasUrl)
+router.post('/post',protect, getPostSasUrl)
 
 module.exports = router

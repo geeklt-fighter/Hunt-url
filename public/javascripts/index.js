@@ -21,13 +21,14 @@ const contributeButton = document.querySelector('.btn-contribution')
 
 let headeruserimg = document.querySelector('.nav__user-img')
 let accountuserimg = document.querySelector('.form__user-photo')
+let cardimg = document.querySelector('.card__picture-img')
 
 if (headeruserimg) {
     headeruserimg.onload = function () {
         console.log(`Image loaded, size ${headeruserimg.src}`);
     }
     headeruserimg.onerror = function () {
-        getImage(headeruserimg.src)
+        getImage(headeruserimg.src,"user")
     }
 }
 
@@ -36,7 +37,16 @@ if (accountuserimg) {
         console.log(`Image loaded, size ${accountuserimg.src}`);
     }
     accountuserimg.onerror = function () {
-        getImage(accountuserimg.src)
+        getImage(accountuserimg.src,"user")
+    }
+}
+
+if (cardimg) {
+    cardimg.onload = function () {
+        console.log(`Image loaded, size ${cardimg.src}`);
+    }
+    cardimg.onerror = function () {
+        getImage(cardimg.src,"post")
     }
 }
 
@@ -100,24 +110,21 @@ if (userPasswordForm) {
 
 if (editPostForm) {
 
-
     editPostForm.addEventListener('submit', e => {
         e.preventDefault()
         const themes = document.getElementById('theme')
         const levels = document.getElementById('level')
 
-        const name = document.getElementById('postname').value
-        const theme = themes.options[themes.selectedIndex].text
-        const difficulty = levels.options[levels.selectedIndex].text
-        const summary = document.getElementById('summary').value
-        const description = document.getElementById('description').value
-        const mediaResource = 'data-science-3.jpg'
-        // const mediaResource = document.getElementById('mediaResource').files[0]
-        const poster = document.getElementById('user-id').textContent
+        const form = new FormData()
+        form.append('name', document.getElementById('postname').value)
+        form.append('theme', themes.options[themes.selectedIndex].text)
+        form.append('difficulty', levels.options[levels.selectedIndex].text)
+        form.append('summary', document.getElementById('summary').value)
+        form.append('description', document.getElementById('description').value)
+        form.append('mediaResource', document.getElementById('photo').files[0])
+        form.append('poster', document.getElementById('user-id').textContent)
 
-        
-
-        createPost(name, theme, difficulty, summary, description, mediaResource, poster)
+        createPost(form)
     })
 }
 

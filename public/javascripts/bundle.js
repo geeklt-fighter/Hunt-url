@@ -8762,29 +8762,22 @@ var createPost =
 function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee(name, theme, difficulty, summary, description, mediaResource, poster) {
+  regeneratorRuntime.mark(function _callee(data) {
     var res;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
             _context.prev = 0;
-            _context.next = 3;
+            console.log(data);
+            _context.next = 4;
             return (0, _axios.default)({
               method: 'POST',
               url: "/api/v1/posts/",
-              data: {
-                name: name,
-                theme: theme,
-                difficulty: difficulty,
-                summary: summary,
-                description: description,
-                mediaResource: mediaResource,
-                poster: poster
-              }
+              data: data
             });
 
-          case 3:
+          case 4:
             res = _context.sent;
 
             if (res.data.status === 'success') {
@@ -8794,23 +8787,23 @@ function () {
               }, 500);
             }
 
-            _context.next = 10;
+            _context.next = 11;
             break;
 
-          case 7:
-            _context.prev = 7;
+          case 8:
+            _context.prev = 8;
             _context.t0 = _context["catch"](0);
             (0, _alert.showAlert)('error', _context.t0);
 
-          case 10:
+          case 11:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 7]]);
+    }, _callee, null, [[0, 8]]);
   }));
 
-  return function createPost(_x, _x2, _x3, _x4, _x5, _x6, _x7) {
+  return function createPost(_x) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -8855,7 +8848,7 @@ function () {
     }, _callee2, null, [[0, 7]]);
   }));
 
-  return function deletePost(_x8) {
+  return function deletePost(_x2) {
     return _ref2.apply(this, arguments);
   };
 }(); // headers:{
@@ -8940,46 +8933,47 @@ var getImage =
 function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee(url) {
-    var res;
+  regeneratorRuntime.mark(function _callee(imgurl, type) {
+    var url, res;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
-            _context.prev = 0;
-            _context.next = 3;
+            url = type === 'user' ? '/images/user' : '/images/post';
+            _context.prev = 1;
+            _context.next = 4;
             return (0, _axios.default)({
               method: 'POST',
-              url: "/images/resource",
+              url: url,
               data: {
-                url: url
+                imgurl: imgurl
               }
             });
 
-          case 3:
+          case 4:
             res = _context.sent;
 
             if (res.data.status === 'success') {
               location.assign('/me');
             }
 
-            _context.next = 10;
+            _context.next = 11;
             break;
 
-          case 7:
-            _context.prev = 7;
-            _context.t0 = _context["catch"](0);
+          case 8:
+            _context.prev = 8;
+            _context.t0 = _context["catch"](1);
             (0, _alert.showAlert)('error', _context.t0);
 
-          case 10:
+          case 11:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 7]]);
+    }, _callee, null, [[1, 8]]);
   }));
 
-  return function getImage(_x) {
+  return function getImage(_x, _x2) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -9275,6 +9269,7 @@ var deletePostButton = document.querySelectorAll('.btn-delete-post');
 var contributeButton = document.querySelector('.btn-contribution');
 var headeruserimg = document.querySelector('.nav__user-img');
 var accountuserimg = document.querySelector('.form__user-photo');
+var cardimg = document.querySelector('.card__picture-img');
 
 if (headeruserimg) {
   headeruserimg.onload = function () {
@@ -9282,7 +9277,7 @@ if (headeruserimg) {
   };
 
   headeruserimg.onerror = function () {
-    (0, _image.getImage)(headeruserimg.src);
+    (0, _image.getImage)(headeruserimg.src, "user");
   };
 }
 
@@ -9292,7 +9287,17 @@ if (accountuserimg) {
   };
 
   accountuserimg.onerror = function () {
-    (0, _image.getImage)(accountuserimg.src);
+    (0, _image.getImage)(accountuserimg.src, "user");
+  };
+}
+
+if (cardimg) {
+  cardimg.onload = function () {
+    console.log("Image loaded, size ".concat(cardimg.src));
+  };
+
+  cardimg.onerror = function () {
+    (0, _image.getImage)(cardimg.src, "post");
   };
 }
 
@@ -9350,15 +9355,15 @@ if (editPostForm) {
     e.preventDefault();
     var themes = document.getElementById('theme');
     var levels = document.getElementById('level');
-    var name = document.getElementById('postname').value;
-    var theme = themes.options[themes.selectedIndex].text;
-    var difficulty = levels.options[levels.selectedIndex].text;
-    var summary = document.getElementById('summary').value;
-    var description = document.getElementById('description').value;
-    var mediaResource = 'data-science-3.jpg'; // const mediaResource = document.getElementById('mediaResource').files[0]
-
-    var poster = document.getElementById('user-id').textContent;
-    (0, _editpost.createPost)(name, theme, difficulty, summary, description, mediaResource, poster);
+    var form = new FormData();
+    form.append('name', document.getElementById('postname').value);
+    form.append('theme', themes.options[themes.selectedIndex].text);
+    form.append('difficulty', levels.options[levels.selectedIndex].text);
+    form.append('summary', document.getElementById('summary').value);
+    form.append('description', document.getElementById('description').value);
+    form.append('mediaResource', document.getElementById('photo').files[0]);
+    form.append('poster', document.getElementById('user-id').textContent);
+    (0, _editpost.createPost)(form);
   });
 }
 
@@ -9445,7 +9450,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55877" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56436" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

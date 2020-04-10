@@ -3,20 +3,13 @@ import { showAlert } from "./alert";
 
 
 
-export const createPost = async (name,theme,difficulty,summary,description,mediaResource,poster) => {
+export const createPost = async (data) => {
     try {
+        console.log(data)
         const res = await axios({
             method:'POST',
-            url: `/api/v1/posts/`,
-            data:{
-                name,
-                theme,
-                difficulty,
-                summary,
-                description,
-                mediaResource,
-                poster
-            }
+            url: `/api/v1/posts/`, 
+            data 
         })
        
         if (res.data.status === 'success') {
