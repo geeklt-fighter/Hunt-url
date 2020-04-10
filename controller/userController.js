@@ -6,6 +6,7 @@ const User = require('../models/userModel')
 const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 
+// Get the azure blob storage connection string
 const { AZURE_CSTRING_DEV } = process.env
 
 const blobService = azureStorage.createBlobService(AZURE_CSTRING_DEV)
@@ -80,7 +81,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
         AccessPolicy: {
             Permissions: azureStorage.BlobUtilities.SharedAccessPermissions.READ,
             Start: azureStorage.date.daysFromNow(0),
-            Expiry: azureStorage.date.daysFromNow(14)
+            Expiry: azureStorage.date.daysFromNow(15)
         }
     })
 

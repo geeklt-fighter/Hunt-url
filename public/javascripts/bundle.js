@@ -8618,26 +8618,26 @@ function () {
 
           case 5:
             res = _context.sent;
-            console.log(res);
 
             if (res.data.status === 'success') {
               (0, _alert.showAlert)('success', "".concat(type.toUpperCase(), " updates successfully"));
+              location.assign('/me');
             }
 
-            _context.next = 13;
+            _context.next = 12;
             break;
 
-          case 10:
-            _context.prev = 10;
+          case 9:
+            _context.prev = 9;
             _context.t0 = _context["catch"](2);
             (0, _alert.showAlert)('error', _context.t0.response.data.message);
 
-          case 13:
+          case 12:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[2, 10]]);
+    }, _callee, null, [[2, 9]]);
   }));
 
   return function updateSettings(_x, _x2) {
@@ -8958,36 +8958,31 @@ function () {
 
           case 3:
             res = _context.sent;
-            _context.next = 9;
+
+            if (res.data.status === 'success') {
+              location.assign('/me');
+            }
+
+            _context.next = 10;
             break;
 
-          case 6:
-            _context.prev = 6;
+          case 7:
+            _context.prev = 7;
             _context.t0 = _context["catch"](0);
             (0, _alert.showAlert)('error', _context.t0);
 
-          case 9:
+          case 10:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[0, 6]]);
+    }, _callee, null, [[0, 7]]);
   }));
 
   return function getImage(_x) {
     return _ref.apply(this, arguments);
   };
-}(); // if (res.data.status === 'success') {
-//     let accountuserimg = document.querySelector('.form__user-photo')
-//     let headeruserimg = document.querySelector('.nav__user-img')
-//     if (accountuserimg) {
-//         accountuserimg.src = res.data.url
-//     }
-//     if (headeruserimg) {
-//         headeruserimg.src = res.data.url
-//     }   
-// }
-
+}();
 
 exports.getImage = getImage;
 },{"axios":"../../node_modules/axios/index.js","./alert":"alert.js"}],"index.js":[function(require,module,exports) {
@@ -9360,7 +9355,8 @@ if (editPostForm) {
     var difficulty = levels.options[levels.selectedIndex].text;
     var summary = document.getElementById('summary').value;
     var description = document.getElementById('description').value;
-    var mediaResource = 'data-science-3.jpg';
+    var mediaResource = 'data-science-3.jpg'; // const mediaResource = document.getElementById('mediaResource').files[0]
+
     var poster = document.getElementById('user-id').textContent;
     (0, _editpost.createPost)(name, theme, difficulty, summary, description, mediaResource, poster);
   });
@@ -9449,7 +9445,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50760" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55877" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

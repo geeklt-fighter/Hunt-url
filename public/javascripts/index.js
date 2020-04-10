@@ -8,6 +8,7 @@ import { contribute } from "./contribute";
 import { getImage } from "./image";
 import { showAlert } from "./alert";
 
+
 const signupForm = document.querySelector('.form--signup')
 const loginForm = document.querySelector('.form--login')
 const userDataForm = document.querySelector('.form-user-data')
@@ -111,8 +112,10 @@ if (editPostForm) {
         const summary = document.getElementById('summary').value
         const description = document.getElementById('description').value
         const mediaResource = 'data-science-3.jpg'
+        // const mediaResource = document.getElementById('mediaResource').files[0]
         const poster = document.getElementById('user-id').textContent
 
+        
 
         createPost(name, theme, difficulty, summary, description, mediaResource, poster)
     })

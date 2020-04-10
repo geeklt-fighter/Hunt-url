@@ -1,11 +1,18 @@
 const multer = require('multer')
 const sharp = require('sharp')
+const azureStorage = require('azure-storage')
+const getStream = require('into-stream')
 const Post = require('../models/postModel')
 const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 
+// Get the azure blob storage connection string
+const { AZURE_CSTRING_DEV } = process.env
 
+const blobService = azureStorage.createBlobService(AZURE_CSTRING_DEV)
 const multerStorage = multer.memoryStorage()
+
+const containerName = 'user-porfolio'
 
 const multerFilter = (req, file, cb) => {
     if (file.mimetype.startsWith('image')) {
@@ -28,7 +35,7 @@ exports.resizePostImages = catchAsync(async (req, res, next) => {
     if (!req.files.mediaResource) {
         return next()
     }
-
+    
     req.body.mediaResource = `post-${req.params.id}-${Date.now()}-cover.jpeg`
 
     await sharp(req.files.mediaResource[0].buffer)

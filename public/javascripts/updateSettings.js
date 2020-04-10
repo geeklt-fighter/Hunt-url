@@ -16,10 +16,9 @@ export const updateSettings = async (data, type) => {
             data
         })
 
-        console.log(res)
         if (res.data.status === 'success') {
             showAlert('success', `${type.toUpperCase()} updates successfully`)
-            
+            location.assign('/me')
         }
     } catch (err) {
         showAlert('error', err.response.data.message)
