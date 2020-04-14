@@ -6,4 +6,4 @@ node_modules/
 .vscode/
 
 
-data-process/shared_code/batch_multiprocessing.py
+data-process/
