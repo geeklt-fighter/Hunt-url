@@ -11,7 +11,7 @@ header.header
                 -if (user.photo) 
                     img.nav__user-img(src=`${user.photo}` alt=`Photo of ${user.name}`)
                 -else
-                     img.nav__user-img(src=`/images/users/default.jpg` alt=`Photo of ${user.name}`)
+                    img.nav__user-img(src=`/images/users/default.jpg` alt=`Photo of ${user.name}`)
                 span#username= user.name.split(' ')[0]
         else
             a.nav__el(href="/login") Log in
