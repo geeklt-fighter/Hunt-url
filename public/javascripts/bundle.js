@@ -8952,25 +8952,29 @@ function () {
 
           case 4:
             res = _context.sent;
+            console.log(res);
 
-            if (res.data.status === 'success') {
-              location.assign('/me');
+            if (!(res.data.status === 'success')) {
+              _context.next = 8;
+              break;
             }
 
-            _context.next = 11;
-            break;
+            return _context.abrupt("return", true);
 
           case 8:
-            _context.prev = 8;
+            return _context.abrupt("return", false);
+
+          case 11:
+            _context.prev = 11;
             _context.t0 = _context["catch"](1);
             (0, _alert.showAlert)('error', _context.t0);
 
-          case 11:
+          case 14:
           case "end":
             return _context.stop();
         }
       }
-    }, _callee, null, [[1, 8]]);
+    }, _callee, null, [[1, 11]]);
   }));
 
   return function getImage(_x, _x2) {
@@ -9277,6 +9281,7 @@ if (headeruserimg) {
   };
 
   headeruserimg.onerror = function () {
+    console.log("hello: ", headeruserimg.src);
     (0, _image.getImage)(headeruserimg.src, "user");
   };
 }
@@ -9287,7 +9292,7 @@ if (accountuserimg) {
   };
 
   accountuserimg.onerror = function () {
-    (0, _image.getImage)(accountuserimg.src, "user");
+    if ((0, _image.getImage)(accountuserimg.src, "user")) location.assign('/me');
   };
 }
 
@@ -9297,7 +9302,7 @@ if (cardimg) {
   };
 
   cardimg.onerror = function () {
-    (0, _image.getImage)(cardimg.src, "post");
+    if ((0, _image.getImage)(cardimg.src, "post")) location.assign('/me');
   };
 }
 
@@ -9450,7 +9455,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56436" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55028" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

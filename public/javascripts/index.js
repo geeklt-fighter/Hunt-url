@@ -28,7 +28,8 @@ if (headeruserimg) {
         console.log(`Image loaded, size ${headeruserimg.src}`);
     }
     headeruserimg.onerror = function () {
-        getImage(headeruserimg.src,"user")
+        console.log("hello: ", headeruserimg.src)
+        getImage(headeruserimg.src, "user")
     }
 }
 
@@ -37,7 +38,8 @@ if (accountuserimg) {
         console.log(`Image loaded, size ${accountuserimg.src}`);
     }
     accountuserimg.onerror = function () {
-        getImage(accountuserimg.src,"user")
+        if (getImage(accountuserimg.src, "user"))
+            location.assign('/me')
     }
 }
 
@@ -46,7 +48,8 @@ if (cardimg) {
         console.log(`Image loaded, size ${cardimg.src}`);
     }
     cardimg.onerror = function () {
-        getImage(cardimg.src,"post")
+        if (getImage(cardimg.src, "post"))
+            location.assign('/me')
     }
 }
 

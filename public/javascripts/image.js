@@ -14,10 +14,15 @@ export const getImage = async (imgurl,type) => {
                 imgurl
             }
         })
-
-        if (res.data.status === 'success') {
-            location.assign('/me')
+        
+        console.log(res)
+        if(res.data.status === 'success'){
+            return true
         }
+        return false
+        // if (res.data.status === 'success') {
+        //     location.assign('/me')
+        // }
     } catch (err) {
         showAlert('error', err)
     }

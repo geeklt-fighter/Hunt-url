@@ -81,8 +81,8 @@ exports.updateMe = catchAsync(async (req, res, next) => {
         let sasToken = blobService.generateSharedAccessSignature(containerName, req.file.filename, {
             AccessPolicy: {
                 Permissions: azureStorage.BlobUtilities.SharedAccessPermissions.READ,
-                Start: azureStorage.date.daysFromNow(0),
-                Expiry: azureStorage.date.daysFromNow(15)
+                Start: azureStorage.date.secondsFromNow(0),
+                Expiry: azureStorage.date.secondsFromNow(15)
             }
         })
         filteredBody.photo = `${url}?${sasToken}`
