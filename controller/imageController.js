@@ -20,7 +20,7 @@ const getBlobImageUrl = (url) => {
         AccessPolicy: {
             Permissions: azureStorage.BlobUtilities.SharedAccessPermissions.READ,
             Start: azureStorage.date.daysFromNow(0),
-            Expiry: azureStorage.date.daysFromNow(30)
+            Expiry: azureStorage.date.daysFromNow(300)
         }
     })
     return `${urlwithoutqstr}?${sasToken}`
@@ -29,7 +29,7 @@ const getBlobImageUrl = (url) => {
 
 exports.getUserSasUrl = catchAsync(async (req, res, next) => {
 
-    let url = getBlobImageUrl(req.body.url)
+    let url = getBlobImageUrl(req.body.imgurl)
 
     /** 完成更新資料到資料庫，把調整過的sas_url重新寫進資料庫 */
     await User.findByIdAndUpdate(req.user.id, { photo: url }, { new: true, runValidators: true })
@@ -39,15 +39,3 @@ exports.getUserSasUrl = catchAsync(async (req, res, next) => {
     })
 })
 
-exports.getPostSasUrl = catchAsync(async (req, res, next) => {
-
-    let url = getBlobImageUrl(req.body.url)
-
-    /** 完成更新資料到資料庫，把調整過的sas_url重新寫進資料庫 */
-    // await User.findByIdAndUpdate(req.user.id,{photo:url}, { new: true, runValidators: true })
-    // Post.findOneAndUpdate(req.user.id, { mediaResource: url }, { new: true, runValidators: true })
-
-    res.status(200).json({
-        status: 'success'
-    })
-})
