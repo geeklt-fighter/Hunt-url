@@ -8889,7 +8889,7 @@ function () {
             try {
               res = (0, _axios.default)({
                 method: 'GET',
-                url: 'http://localhost:3001/api/v1/histories/'
+                url: '/api/v1/histories/'
               });
               console.log(res);
             } catch (err) {

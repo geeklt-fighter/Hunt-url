@@ -8,7 +8,7 @@ export const contribute = async() =>{
     try {
         const res = axios({
             method:'GET',
-            url:'http://localhost:3001/api/v1/histories/'
+            url:'/api/v1/histories/'
         })
 
         console.log(res)
