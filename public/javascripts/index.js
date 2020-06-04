@@ -149,7 +149,7 @@ if (contributeButton) {
         if (info === true) {
             let txt = "Thanks your contribution."
             contribute()
-            showAlert('success', txt)
+            showAlert('success', txt) 
         } else {
             let txt = "It's ok. You can still use recommend service !!"
             showAlert('warn', txt)
