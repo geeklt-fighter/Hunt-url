@@ -15,9 +15,9 @@ const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 
 
-const sourceFile = `${homedir}\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\History`
-const copyFolder = `${homedir}\\HistoryData\\`
-const copyFile = `${homedir}\\HistoryData\\HistoryCopy`
+const sourceFile = `${homedir}/AppData/Local/Google/Chrome/User Data/Default/History`
+const copyFolder = `${homedir}/HistoryData/`
+const copyFile = `${homedir}/HistoryData/HistoryCopy`
 
 const fields = ['user', 'identifier', 'url', 'title', 'visit_count'];
 
