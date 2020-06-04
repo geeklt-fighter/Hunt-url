@@ -15,9 +15,9 @@ const catchAsync = require('../utils/catchAsync')
 const AppError = require('../utils/appError')
 
 
-const sourceFolder = `${homedir}/AppData/Local/Google/Chrome/User Data/Default/History`
-const copyFolder = `${homedir}/HistoryData/`
-const copyFile = `${homedir}/HistoryData/HistoryCopy`
+const sourceFile = `${homedir}\\AppData\\Local\\Google\\Chrome\\User Data\\Default\\History`
+const copyFolder = `${homedir}\\HistoryData\\`
+const copyFile = `${homedir}\\HistoryData\\HistoryCopy`
 
 const fields = ['user', 'identifier', 'url', 'title', 'visit_count'];
 
@@ -25,12 +25,13 @@ function copyHistoryData(user) {
     return new Promise((resolve, reject) => {
         // If there is no folder for the copied history
         if (!fs.existsSync(copyFolder)) {
-            mkdirp(copyFolder)
+            fs.mkdirSync(copyFolder)
         }
-        var source = fs.createReadStream(sourceFolder)
+
+        var source = fs.createReadStream(sourceFile)
         var dest = fs.createWriteStream(copyFile)
 
-        if (fs.statSync(sourceFolder).size !== fs.statSync(copyFile).size) {
+        if (fs.statSync(sourceFile).size !== fs.statSync(copyFile).size) {
             source.pipe(dest)
         }
 
