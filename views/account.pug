@@ -43,7 +43,7 @@ block content
                             label.form__label(for='email') Email address
                             input#email.form__input(type='email' value=`${user.email}`, required, name='email')
                         .form__group.form__photo-upload
-                            -if (user.photo !== "default.jpg") 
+                            -if (user.photo !== "default.jpg")  
                                 img.form__user-photo(src=`${user.photo}` alt='User photo')
                             -else
                                 img.form__user-photo(src=`/images/users/default.jpg` alt='User photo')

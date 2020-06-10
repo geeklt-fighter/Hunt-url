@@ -5,7 +5,7 @@ import { showAlert } from "./alert";
 
 export const createPost = async (data) => {
     try {
-        console.log(data)
+        
         const res = await axios({
             method:'POST',
             url: `/api/v1/posts/`, 
