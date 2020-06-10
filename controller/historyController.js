@@ -142,7 +142,7 @@ exports.processHistories = catchAsync(async (req, res, next) => {
     const file = await copyHistoryData(fileinfo, req.user.id)
     const fileName = file.split('\\')[file.split('\\').length - 1]
     fs.unlink(fileinfo,(err)=>{
-        if (err) {
+        if (err) { 
             console.error(err)
             return
         }
