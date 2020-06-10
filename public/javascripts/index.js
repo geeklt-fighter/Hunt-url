@@ -151,10 +151,9 @@ if (deletePostButton) {
     }
 }
 
-
 const createContainer = async () => {
     try {
-        if (!containerClient.exists())
+        if (!(await containerClient.exists()))
             await containerClient.create()
     } catch (err) {
         showAlert('error', err.message)
