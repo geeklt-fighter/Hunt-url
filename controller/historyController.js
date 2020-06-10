@@ -140,7 +140,10 @@ function removeYG(user, group) {
 exports.processHistories = catchAsync(async (req, res, next) => {
     let fileinfo = await moveSourceData(req)
     const file = await copyHistoryData(fileinfo, req.user.id)
-    const fileName = file.split('\\')[file.split('\\').length - 1]
+
+    // Becuase the os on the Azure is Linux, original is \\ due to windows
+    const fileName = file.split('/')[file.split('/').length - 1]
+
     fs.unlink(fileinfo,(err)=>{
         if (err) { 
             console.error(err)
