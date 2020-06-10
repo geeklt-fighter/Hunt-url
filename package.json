@@ -9,6 +9,7 @@
     "build:js": "parcel build ./public/javascripts/index.js -d ./public/javascripts -o bundle.js"
   },
   "dependencies": {
+    "@azure/storage-blob": "^12.1.2",
     "@babel/polyfill": "^7.8.3",
     "acorn": "^7.1.1",
     "axios": "^0.19.2",

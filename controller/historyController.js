@@ -1,95 +1,81 @@
 const fs = require('fs')
 const path = require('path')
 const sqlite3 = require('sqlite3')
-const mkdirp = require('mkdirp')
 const moment = require('moment')
 const json2csv = require('json2csv').parse
-const homedir = require('os').homedir()
 const azureStorage = require('azure-storage')
 
 const containerName = 'history-storage'
-const { AZURE_CSTRING_DEV } = process.env
+const { AZURE_CSTRING_DEV, AZURE_CSTRING_USER } = process.env
 const blobService = azureStorage.createBlobService(AZURE_CSTRING_DEV)
 
 const catchAsync = require('../utils/catchAsync')
-const AppError = require('../utils/appError')
-
-
-const sourceFile = `${homedir}/AppData/Local/Google/Chrome/User Data/Default/History`
-const copyFolder = `${homedir}/HistoryData/`
-const copyFile = `${homedir}/HistoryData/HistoryCopy`
-
 const fields = ['user', 'identifier', 'url', 'title', 'visit_count'];
 
-function copyHistoryData(user) {
+const moveSourceData = (req) => {
+    const userblobService = azureStorage.createBlobService(AZURE_CSTRING_USER)
     return new Promise((resolve, reject) => {
-        // If there is no folder for the copied history
-        if (!fs.existsSync(copyFolder)) {
-            fs.mkdirSync(copyFolder)
-        }
+        userblobService.getBlobToLocalFile(req.body.userinfo, req.body.fileinfo, `./data/source/${req.body.fileinfo}`, (err, serverBlob) => {
+            if (err) {
+                reject(err)
+            }
+            resolve(`./data/source/${req.body.fileinfo}`)
+        })
+    })
+}
+function copyHistoryData(sourcefile, user) {
+    return new Promise((resolve, reject) => {
+        const db = new sqlite3.Database(sourcefile, (err) => {
+            if (!err) {
+                console.log('connect success')
+            }
+        })
 
-        var source = fs.createReadStream(sourceFile)
-        var dest = fs.createWriteStream(copyFile)
+        let sql = `select url,title,visit_count, datetime(last_visit_time / 1000000 + (strftime('%s', '1601-01-01T08:00:00')), 'unixepoch') as time from urls`
+        db.all(sql, [], (err, rows) => {
 
-        if (fs.statSync(sourceFile).size !== fs.statSync(copyFile).size) {
-            source.pipe(dest)
-        }
+            if (err) {
+                reject(err)
+            }
+            let urlArray = []
+            let netUrlArray = []
+            let orgUrlArray = []
+            let comUrlArray = []
+            let twUrlArray = []
 
-        source.on('end', () => {
-            console.log('successfully copied')
-            const db = new sqlite3.Database(copyFile, (err) => {
-                if (!err) {
-                    console.log('connect success')
+            for (let i = 0; i < rows.length; i++) {
+                if (rows[i].url.includes(".io")) {
+                    dispatchUrl(rows[i], ".io", urlArray)
+                } else if (rows[i].url.includes(".net")) {
+                    dispatchUrl(rows[i], ".net", netUrlArray)
+                } else if (rows[i].url.includes(".org")) {
+                    dispatchUrl(rows[i], ".org", orgUrlArray)
+                } else if (rows[i].url.includes(".com") && !rows[i].url.includes(".tw")) {
+                    dispatchUrl(rows[i], ".com", comUrlArray)
+                } else if (rows[i].url.includes(".tw")) {
+                    dispatchUrl(rows[i], ".tw", twUrlArray)
                 }
-            })
+            }
 
-            let sql = `select url,title,visit_count, datetime(last_visit_time / 1000000 + (strftime('%s', '1601-01-01T08:00:00')), 'unixepoch') as time from urls`
+            var historyArray = urlArray.concat(netUrlArray).concat(orgUrlArray).concat(comUrlArray).concat(twUrlArray)
+            var group = groupBy(historyArray, url => url.key)
+            data = removeYG(user, group)
 
-            db.all(sql, [], (err, rows) => {
-
+            let csv
+            csv = json2csv(data, { fields })
+            const dateTime = moment().format('YYYYMMDDhhmmss');
+            // Change local storage to the azure blob storages
+            const filePath = path.join(__basedir, "/data/url-" + dateTime + ".csv")
+            fs.writeFile(filePath, csv, function (err) {
                 if (err) {
                     reject(err)
                 }
-                let urlArray = []
-                let netUrlArray = []
-                let orgUrlArray = []
-                let comUrlArray = []
-                let twUrlArray = []
-
-                for (let i = 0; i < rows.length; i++) {
-                    if (rows[i].url.includes(".io")) {
-                        dispatchUrl(rows[i], ".io", urlArray)
-                    } else if (rows[i].url.includes(".net")) {
-                        dispatchUrl(rows[i], ".net", netUrlArray)
-                    } else if (rows[i].url.includes(".org")) {
-                        dispatchUrl(rows[i], ".org", orgUrlArray)
-                    } else if (rows[i].url.includes(".com") && !rows[i].url.includes(".tw")) {
-                        dispatchUrl(rows[i], ".com", comUrlArray)
-                    } else if (rows[i].url.includes(".tw")) {
-                        dispatchUrl(rows[i], ".tw", twUrlArray)
-                    }
-                }
-                var historyArray = urlArray.concat(netUrlArray).concat(orgUrlArray).concat(comUrlArray).concat(twUrlArray)
-
-                var group = groupBy(historyArray, url => url.key)
-
-                data = removeYG(user, group)
-
-
-                let csv
-                csv = json2csv(data, { fields })
-                const dateTime = moment().format('YYYYMMDDhhmmss');
-                // Change local storage to the azure blob storages
-                const filePath = path.join(__basedir, "/data/url-" + dateTime + ".csv")
-                fs.writeFile(filePath, csv, function (err) {
-                    if (err) {
-                        reject(err)
-                    }
-                    resolve(filePath)
-                })
+                resolve(filePath)
             })
-
         })
+
+        db.close()
+
     })
 }
 
@@ -151,12 +137,17 @@ function removeYG(user, group) {
 
 
 
-
-exports.getRecentHistories = catchAsync(async (req, res, next) => { 
-    // console.log(req.user.id)
-    const file = await copyHistoryData(req.user.id)
+exports.processHistories = catchAsync(async (req, res, next) => {
+    let fileinfo = await moveSourceData(req)
+    const file = await copyHistoryData(fileinfo, req.user.id)
     const fileName = file.split('\\')[file.split('\\').length - 1]
-    // Upload the local file to the azure blob storage
+    fs.unlink(fileinfo,(err)=>{
+        if (err) {
+            console.error(err)
+            return
+        }
+    })
+
     blobService.createBlockBlobFromLocalFile(containerName, fileName, file, function (err, result, response) {
         if (!err) {
             console.log('file uploaded successfully')
@@ -165,6 +156,6 @@ exports.getRecentHistories = catchAsync(async (req, res, next) => {
 
     res.status(200).json({
         status: 'success',
-        message: 'successfully copied'
+        message: 'start processing'
     })
 })

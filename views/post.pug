@@ -45,7 +45,7 @@ block content
                     -if (result)
                         each url in result
                             .overview-box__detail
-                                li= url 
+                                a(href=`${ url }` target="_blank")= url
                                 br
                             
                     p#post-id= post._id

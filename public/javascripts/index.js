@@ -4,10 +4,10 @@ import { signup } from "./signup";
 import { updateSettings } from "./updateSettings";
 import { recommend } from "./recommend";
 import { deletePost, createPost } from "./editpost";
-import { contribute } from "./contribute";
+import { provideInfo } from "./contribute";
 import { getImage } from "./image";
 import { showAlert } from "./alert";
-
+import { BlobServiceClient } from "@azure/storage-blob";
 
 const signupForm = document.querySelector('.form--signup')
 const loginForm = document.querySelector('.form--login')
@@ -17,11 +17,24 @@ const userPasswordForm = document.querySelector('.form-user-password')
 const searchButton = document.querySelector('.btn-search')
 const logoutButton = document.querySelector('.nav__el--logout')
 const deletePostButton = document.querySelectorAll('.btn-delete-post')
-const contributeButton = document.querySelector('.btn-contribution')
+const checkHistoryForm = document.querySelector('.form-history-upload')
+
 
 let headeruserimg = document.querySelector('.nav__user-img')
 let accountuserimg = document.querySelector('.form__user-photo')
 let cardimg = document.querySelector('.card__picture-img')
+
+
+const blobSasUrl = "https://huntfrienduserdata.blob.core.windows.net/?sv=2019-10-10&ss=b&srt=sco&sp=rwdlacx&se=2020-07-01T10:32:26Z&st=2020-06-09T02:32:26Z&spr=https,http&sig=CrSJjFQaDYc%2F785rStjxIOw5I3YfQZ0SlA4xwhJRbGE%3D"
+const blobServiceClient = new BlobServiceClient(blobSasUrl)
+let userIdentifier = document.querySelector('.user-id')
+let containerClient = null
+if (userIdentifier) {
+    const containerName = `${userIdentifier.textContent}`
+    containerClient = blobServiceClient.getContainerClient(containerName)
+}
+
+
 
 if (headeruserimg) {
     headeruserimg.onload = function () {
@@ -84,8 +97,6 @@ if (logoutButton) {
 }
 
 if (userDataForm) {
-
-
     userDataForm.addEventListener('submit', e => {
         e.preventDefault()
 
@@ -97,7 +108,6 @@ if (userDataForm) {
         updateSettings(form, 'data')
     })
 }
-
 
 if (userPasswordForm) {
     userPasswordForm.addEventListener('submit', e => {
@@ -133,7 +143,6 @@ if (editPostForm) {
 
 
 if (deletePostButton) {
-
     for (let i = 0; i < deletePostButton.length; i++) {
         deletePostButton[i].addEventListener('click', () => {
             const postId = document.getElementById(`post-id-${i}`).textContent
@@ -142,25 +151,52 @@ if (deletePostButton) {
     }
 }
 
-if (contributeButton) {
-    contributeButton.addEventListener('click', () => {
-        let info = confirm("1. Please ensure you want to upload your browsing history \n2. Ensure that you are the owner of the history")
 
+const createContainer = async () => {
+    try {
+        if (!containerClient.exists())
+            await containerClient.create()
+    } catch (err) {
+        showAlert('error', err.message)
+    }
+}
+const uploadFiles = async (file, name) => {
+    try {
+        const blockBlobClient = await containerClient.getBlockBlobClient(name)
+        await blockBlobClient.uploadBrowserData(file)
+    } catch (error) {
+        showAlert('error', error.message)
+    }
+}
+
+if (checkHistoryForm) {
+    const history = document.getElementById("historyFile")
+
+    history.addEventListener('change', () => {
+        document.querySelector('.file__render').innerHTML = history.files[0].name
+    })
+
+    checkHistoryForm.addEventListener('submit', async e => {
+        e.preventDefault()
+
+
+        let info = confirm("1. Please ensure you want to upload your browsing history \n2. Ensure that you are the owner of the history")
         if (info === true) {
             let txt = "Thanks your contribution."
-            contribute()
-            showAlert('success', txt) 
+            name = "history" + new Date().getTime()
+            showAlert('success', txt)
+            await createContainer()
+            await uploadFiles(history.files[0], name)
+            provideInfo(userIdentifier.textContent, name)
         } else {
             let txt = "It's ok. You can still use recommend service !!"
             showAlert('warn', txt)
         }
-        // document.getElementById("result-contribution").innerHTML = txt
     })
 }
 
 
 if (searchButton) {
-
     searchButton.addEventListener('click', e => {
         e.preventDefault()
         const currentUrl = window.location.href
@@ -170,11 +206,6 @@ if (searchButton) {
         const postId = document.getElementById('post-id').textContent
 
         if (username) {
-            console.log('Username: ', username.textContent)
-            console.log('Description:', description)
-            console.log('Current Url:', currentUrl)
-            console.log('Title: ', title);
-
             const loader = document.querySelector('.loader')
             loader.style.opacity = 1;
             loader.style.display = 'block'

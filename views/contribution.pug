@@ -7,7 +7,7 @@ mixin navItem(link,text,icon,active)
             svg
                 use(xlink:href=`images/icons.svg#icon-${icon}`)
             | #{text}
-        
+
 block content
     main.main
         .user-view
@@ -17,23 +17,38 @@ block content
                     +navItem('/myposts','My posts','speaker')
                     +navItem('/editpost','Edit post','star')
                     +navItem('/contribution','Contribution','user',true)
-                - if(user.role === 'admin')
-                    .admin-nav
-                        h5.admin-nav__heading Admin
-                        ul.side-nav
-                            +navItem('#','Manage tours','map')
-                            +navItem('#','Manage user','users')
-                            +navItem('#','Manage reviews','star')
-                            +navItem('#','Manage bookings','briefcase')
+                //- - if(user.role === 'admin')
+                //-     .admin-nav
+                //-         h5.admin-nav__heading Admin
+                //-         ul.side-nav
+                //-             +navItem('#','Manage tours','map')
+                //-             +navItem('#','Manage user','users')
+                //-             +navItem('#','Manage reviews','star')
+                //-             +navItem('#','Manage bookings','briefcase')
 
 
             .user-view__content
                 .user-view__form-container
-
-                    h2.heading-secondary.ma-bt-md #{user.name} contribution
+                    h2.heading-secondary.ma-bt-md #{user.name}'s contribution
+                    p.user-id #{user._id}
 
                     p.card__text Hello #{user.name}, welcome to this website. This website is using user's browsing history on Chrome as source. Memeber in this website can post their problem, and this website uses their description in the post to find the similar url in everyone's contribtuion. You can find some wanted url maybe someone provides and this question you have no idea how to search on google. This website is in the development stage, we need more user's data to test the feasibility. If you want to change your searching style, you can contribute your browsing history to make this website better. Thanks !!
                     br
                     br
-                    button.btn.btn--small.btn--green.btn-contribution#constribution Contribute your history
-                    
+
+                    form.form.form-history-upload
+                        .form__group
+                            input.form__upload(type="file" id='historyFile' name='historyFile')
+                            label(for="historyFile") Check your history
+                                |   
+                                label.file__render(for="history")
+                        .form__group.right
+                            button.btn.btn--small.btn--green Contribute
+
+                    //- form.form__group.form__history-upload
+                    //-     .form__group
+                    //-         input.form__upload(type="file" name="hello")
+                    //-         label(for="photo") Check History  
+                    //-     button.btn.btn--small.btn--green Submit
+                    //- button.btn.btn--small.btn--green.btn-contribution#constribution Contribute your history
+

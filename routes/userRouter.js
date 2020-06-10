@@ -15,7 +15,7 @@ router.post('/resetPassword/:token', resetPassword)
 router.use(protect)
 
 router.patch('/updatePassword', updatePassword)
-router.get('/me', getMe, getUser)
+router.get('/me',protect, getMe, getUser)
 router.delete('/deleteMe', deleteMe)
 router.patch('/updateMe', uploadUserPhoto, resizeUserPhoto, updateMe)
 

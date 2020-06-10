@@ -41,7 +41,7 @@ app.set('view engine', 'pug')
 app.set('views', path.join(__dirname, 'views'))
 
 app.use(logger('dev'));
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '25mb' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser())
@@ -50,8 +50,6 @@ app.use(cookieParser())
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString()
-  // console.log('cookies: ', req.cookies)
-  // console.log('locals: ', res.locals)
   next()
 })
 
