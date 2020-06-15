@@ -5,12 +5,12 @@
 
 trigger:
   branches:
-    includes:
+    include:
     - master
-    excludes:
+    exclude:
     - feature/*
   paths:
-    include:
+    exclude:
     - docs/*
     - README.md
 
