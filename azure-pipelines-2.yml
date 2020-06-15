@@ -4,8 +4,15 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- master
-- feature/*
+  branches:
+    includes:
+    - master
+    excludes:
+    - feature/*
+  paths:
+    include:
+    - docs/*
+    - README.md
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -30,6 +37,3 @@ steps:
 - task: PublishBuildArtifacts@1
   displayName: 'Publish artifacts: drop'
 
-pr:
-- master
-- feature/*
