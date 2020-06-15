@@ -32,8 +32,7 @@ block content
                     +overviewBox('Difficulty',post.difficulty,'trending-up')
                     +overviewBox('Poster',post.poster.name,'user')
                     +overviewBox('Ratings',`${post.ratingsAverage} / 5`,'star')
-               
-
+                    
                 .overview-box__group
                     h2.heading-secondary.ma-bt-lg Recommended Urls
                     //- p#result
@@ -49,8 +48,6 @@ block content
                                 br
                             
                     p#post-id= post._id
-           
-
 
         .description-box
             h2.heading-secondary.ma-bt-lg= `About ${post.name} post`

@@ -17,15 +17,6 @@ block content
                     +navItem('/myposts','My posts','speaker')
                     +navItem('/editpost','Edit post','star')
                     +navItem('/contribution','Contribution','user',true)
-                //- - if(user.role === 'admin')
-                //-     .admin-nav
-                //-         h5.admin-nav__heading Admin
-                //-         ul.side-nav
-                //-             +navItem('#','Manage tours','map')
-                //-             +navItem('#','Manage user','users')
-                //-             +navItem('#','Manage reviews','star')
-                //-             +navItem('#','Manage bookings','briefcase')
-
 
             .user-view__content
                 .user-view__form-container
@@ -44,11 +35,3 @@ block content
                                 label.file__render(for="history")
                         .form__group.right
                             button.btn.btn--small.btn--green Contribute
-
-                    //- form.form__group.form__history-upload
-                    //-     .form__group
-                    //-         input.form__upload(type="file" name="hello")
-                    //-         label(for="photo") Check History  
-                    //-     button.btn.btn--small.btn--green Submit
-                    //- button.btn.btn--small.btn--green.btn-contribution#constribution Contribute your history
-
