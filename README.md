@@ -17,10 +17,10 @@ Now people are basically searching google for the answers they want, but to do a
 ## Website features
 Sometimes I search the problem on google, but there is a problem I have no idea with related keyword. Therefore, I want to implement a new searching style. That is using user's browsing history. (Of course, it's important to ask the user for consent) User can contribute their history to this website, and post their problems to search their wanted url. Even though they don't know the keyword, they can try to descript the situation. This website will find the similar content of all the urls from all users  and recommend to you.<br>
 
-## Website Architecture
-![image](https://github.com/LOTINGYI/Learning-route/blob/master/public/images/github/Tim_Side_Project_2.jpg)
+## Website Architecture 
+### The flow under the hood
+![](https://i.imgur.com/YKspwnK.png)
 
-## The flow under the hood
 ### Data process(Background job)
 - Step1: User upload their history data <br>
 - Step2: Clean the data and upload to blob storage<br>
@@ -37,14 +37,16 @@ Sometimes I search the problem on google, but there is a problem I have no idea 
  
  <strong>Note: From step4-2 to step6 using azure batch service with multiprocess and multithread to speed up the scraping</strong>
 
+![](https://i.imgur.com/ypJeY8V.png)
+
 ### Recommend service
 - Step1: User search the similar url based on their description<br>
 - Step2: Call API from flask host<br>
-- Step3: Get the data from the source, and process<br>
+- Step3: Receive the clean data, and find the similarity between user's question and the urls data set<br>
 - Step4: Response to node.js web app <br>
 - Step5: Store the recommend result to database
 - Res: User get the result
 
-Why I do this project for myself ? 
-I want to improve my web development with node.js using MVC architecture and familiar with mongoose and middleware usage. There are multiple Azure services on top of this website, representing my familiarity with Azure PaaS and having some practical capabilities. Through this project I was also exposed to python, implement crawling, data processing, and also use multiprocess and multithread to improve the efficiency.
+Why I do this project ? 
+I want to improve my web development with node.js using MVC framework and familiar with mongoose and middleware usage. There are multiple Azure services on top of this website, representing my familiarity with Azure PaaS and having some practical capabilities. Through this project I was also exposed to python, implement crawling, data processing, and also use multiprocess and multithread to improve the efficiency.
 
